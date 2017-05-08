@@ -1,0 +1,206 @@
+Private Sub Workbook_Open()
+'cancelform.Visible = xlSheetHidden
+'courseform.Visible = xlSheetHidden
+coursenames.Visible = xlSheetHidden
+'externalform.Visible = xlSheetHidden
+'onrequest.Visible = xlSheetHidden
+'substituteform.Visible = xlSheetHidden
+'trainerrecharge.Visible = xlSheetHidden
+'home.Visible = xlSheetVisible
+'home.Activate
+'
+'home.Range("A1").Select
+End Sub
+
+
+Sub mail_bookingform()
+home.Visible = xlSheetHidden
+Application.Dialogs(xlDialogSendMail).Show "PeopleCentre.UK@Sodexo.com", "L and D team: Course booking form"
+End Sub
+
+Sub mail_externalform()
+home.Visible = xlSheetHidden
+Application.Dialogs(xlDialogSendMail).Show "PeopleCentre.UK@Sodexo.com", "L and D team: External training request"
+End Sub
+
+Sub mail_substitueform()
+home.Visible = xlSheetHidden
+Application.Dialogs(xlDialogSendMail).Show "PeopleCentre.UK@Sodexo.com", "L and D team: Course substitution form"
+End Sub
+
+Sub mail_cancelform()
+home.Visible = xlSheetHidden
+Application.Dialogs(xlDialogSendMail).Show "PeopleCentre.UK@Sodexo.com", "L and D team: Course booking cancellation form"
+End Sub
+
+Sub mail_onrequestform()
+home.Visible = xlSheetHidden
+trainerrecharge.Visible = xlSheetVisible
+Application.Dialogs(xlDialogSendMail).Show "PeopleCentre.UK@Sodexo.com", "L and D team: On Request training form"
+End Sub
+Sub mail_academyform()
+If academyform.Range("b11") = "" Then
+MsgBox "Please select the academy name you are nominating for", vbOKOnly, "Error"
+academyform.Range("b11").Select
+academyform.Range("a11").Font.Color = RGB(255, 0, 0)
+Exit Sub
+End If
+home.Visible = xlSheetHidden
+academyform.Visible = xlSheetVisible
+If academyform.Range("b11") = "Supervisor Academy" Then
+Application.Dialogs(xlDialogSendMail).Show "PeopleCentre.UK@Sodexo.com", "L and D team: Supervisor Academy Nomination form"
+Else
+Application.Dialogs(xlDialogSendMail).Show "PeopleCentre.UK@Sodexo.com", "L and D team: Unidentified Academy Nomination form"
+End If
+End Sub
+Sub admin_reveal()
+'shortcut is Shift+ctrl+A
+
+cancelform.Visible = xlSheetVisible
+courseform.Visible = xlSheetVisible
+externalform.Visible = xlSheetVisible
+onrequest.Visible = xlSheetVisible
+substituteform.Visible = xlSheetVisible
+trainerrecharge.Visible = xlSheetVisible
+ordelegates.Visible = xlSheetVisible
+home.Visible = xlSheetVisible
+academyform.Visible = xlSheetVisible
+End Sub
+
+Sub masteruser_show()
+'shortcut is Shift+Ctrl+M
+
+cancelform.Visible = xlSheetVisible
+courseform.Visible = xlSheetVisible
+coursenames.Visible = xlSheetVisible
+externalform.Visible = xlSheetVisible
+onrequest.Visible = xlSheetVisible
+substituteform.Visible = xlSheetVisible
+trainerrecharge.Visible = xlSheetVisible
+ordelegates.Visible = xlSheetVisible
+academyform.Visible = xlSheetVisible
+home.Visible = xlSheetVisible
+End Sub
+
+Sub masteruser_hide()
+'shortcut is Shift+Ctrl+N
+
+cancelform.Visible = xlSheetHidden
+courseform.Visible = xlSheetHidden
+coursenames.Visible = xlSheetHidden
+externalform.Visible = xlSheetHidden
+onrequest.Visible = xlSheetHidden
+substituteform.Visible = xlSheetHidden
+trainerrecharge.Visible = xlSheetHidden
+ordelegates.Visible = xlSheetHidden
+academyform.Visible = xlSheetHidden
+home.Visible = xlSheetVisible
+End Sub
+
+Private Sub academybutton_Click()
+cancelform.Visible = xlSheetHidden
+courseform.Visible = xlSheetHidden
+coursenames.Visible = xlSheetHidden
+externalform.Visible = xlSheetHidden
+onrequest.Visible = xlSheetHidden
+substituteform.Visible = xlSheetHidden
+trainerrecharge.Visible = xlSheetHidden
+ordelegates.Visible = xlSheetHidden
+academyform.Visible = xlSheetVisible
+home.Visible = xlSheetVisible
+academyform.Activate
+academyform.Range("B4").Select
+End Sub
+
+Private Sub adminbutton_Click()
+cancelform.Visible = xlSheetHidden
+courseform.Visible = xlSheetHidden
+coursenames.Visible = xlSheetHidden
+externalform.Visible = xlSheetHidden
+onrequest.Visible = xlSheetHidden
+substituteform.Visible = xlSheetHidden
+academyform.Visible = xlSheetHidden
+ordelegates.Visible = xlSheetVisible
+trainerrecharge.Visible = xlSheetVisible
+home.Visible = xlSheetVisible
+trainerrecharge.Activate
+trainerrecharge.Range("E2").Select
+End Sub
+
+Private Sub bookformbutton_Click()
+cancelform.Visible = xlSheetHidden
+courseform.Visible = xlSheetVisible
+coursenames.Visible = xlSheetHidden
+externalform.Visible = xlSheetHidden
+onrequest.Visible = xlSheetHidden
+substituteform.Visible = xlSheetHidden
+trainerrecharge.Visible = xlSheetHidden
+ordelegates.Visible = xlSheetHidden
+academyform.Visible = xlSheetHidden
+home.Visible = xlSheetVisible
+courseform.Activate
+courseform.Range("A5").Select
+End Sub
+
+Private Sub Cancelbutton_Click()
+cancelform.Visible = xlSheetVisible
+courseform.Visible = xlSheetHidden
+coursenames.Visible = xlSheetHidden
+externalform.Visible = xlSheetHidden
+onrequest.Visible = xlSheetHidden
+ordelegates.Visible = xlSheetHidden
+substituteform.Visible = xlSheetHidden
+trainerrecharge.Visible = xlSheetHidden
+academyform.Visible = xlSheetHidden
+home.Visible = xlSheetVisible
+cancelform.Activate
+cancelform.Range("A5").Select
+End Sub
+
+
+
+Private Sub externalbutton_Click()
+cancelform.Visible = xlSheetHidden
+courseform.Visible = xlSheetHidden
+coursenames.Visible = xlSheetHidden
+externalform.Visible = xlSheetVisible
+onrequest.Visible = xlSheetHidden
+ordelegates.Visible = xlSheetHidden
+substituteform.Visible = xlSheetHidden
+trainerrecharge.Visible = xlSheetHidden
+academyform.Visible = xlSheetHidden
+home.Visible = xlSheetVisible
+externalform.Activate
+externalform.Range("B4").Select
+End Sub
+
+Private Sub onrequestbutton_Click()
+cancelform.Visible = xlSheetHidden
+courseform.Visible = xlSheetHidden
+coursenames.Visible = xlSheetHidden
+externalform.Visible = xlSheetHidden
+onrequest.Visible = xlSheetVisible
+ordelegates.Visible = xlSheetVisible
+substituteform.Visible = xlSheetHidden
+trainerrecharge.Visible = xlSheetHidden
+academyform.Visible = xlSheetHidden
+home.Visible = xlSheetVisible
+onrequest.Activate
+onrequest.Range("e17").Select
+End Sub
+
+
+Private Sub Subbutton_Click()
+cancelform.Visible = xlSheetHidden
+courseform.Visible = xlSheetHidden
+coursenames.Visible = xlSheetHidden
+externalform.Visible = xlSheetHidden
+onrequest.Visible = xlSheetHidden
+ordelegates.Visible = xlSheetHidden
+substituteform.Visible = xlSheetVisible
+trainerrecharge.Visible = xlSheetHidden
+academyform.Visible = xlSheetHidden
+home.Visible = xlSheetVisible
+substituteform.Activate
+substituteform.Range("A5").Select
+End Sub

@@ -1,0 +1,3 @@
+Simple sendmail code:
+
+application.dialogs(xldialogsendmail).show "email address", "Subject line"

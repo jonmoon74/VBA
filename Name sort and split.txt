@@ -1,0 +1,63 @@
+Private Sub name_splitter()
+Dim fullname As String, pos As Integer, cn As String, sn As String, newname As String, a As Integer
+
+On Error Resume Next
+
+For a = 700 To 1300
+
+fullname = Cells(a, 3).Value
+pos = InStr(fullname, " ")
+sn = Left(fullname, pos - 1)
+cn = Mid(fullname, pos + 1)
+Cells(a, 1) = cn
+Cells(a, 2) = sn
+
+Next a
+
+
+End Sub
+
+Private Sub trimmer()
+Dim a As Integer, inputname As String, outputname As String
+
+
+For a = 700 To 1300
+inputname = Cells(a, 3).Value
+outputname = Trim(inputname)
+Cells(a, 3) = outputname
+Next a
+
+End Sub
+
+Private Sub dataprocessing()
+Dim a As Integer, b As Integer, c As Integer, r As Integer
+Dim fn As String, sn As String, modu As String
+Dim td As Date
+
+a = 165
+b = 779
+c = 5
+
+For r = a To b
+
+If Sheet1.Cells(r, 1) <> "" Then
+    
+    fn = Sheet1.Cells(r, 1).Value
+    sn = Sheet1.Cells(r, 2).Value
+    td = Sheet1.Cells(r, 3).Value
+    modu = Sheet1.Cells(r, 4).Value
+    
+    Sheet6.Cells(c, 1) = fn
+    Sheet6.Cells(c, 2) = sn
+    If modu = "induction" Then Sheet6.Cells(c, 7) = td
+    If modu = "Core Skills" Then Sheet6.Cells(c, 8) = td
+    If modu = "Food Safety" Then Sheet6.Cells(c, 12) = td
+    If modu = "Health & Safety" Then Sheet6.Cells(c, 9) = td
+    If modu = "Infection Prevention & Control" Then Sheet6.Cells(c, 13) = td
+    
+    c = c + 1
+End If
+
+Next r
+
+End Sub

@@ -1,0 +1,309 @@
+'Training dashboard
+
+'dashboard
+Option Explicit
+Dim pth As String, nme As String, fnme As String, ofnme As String
+Dim dbd As String, pos As Integer, slash As String, pos2 As Integer, pth2 As String
+
+Private Sub accredbutton_Click()
+Unload Me
+Application.DisplayFullScreen = False
+pth = ActiveWorkbook.Path
+fnme = "Accredited Training.xls"
+slash = "\Databases\"
+ofnme = pth & slash & fnme
+
+Workbooks.Open Filename:=ofnme
+End Sub
+
+Private Sub caresbutton_Click()
+Unload Me
+Application.DisplayFullScreen = False
+pth = ActiveWorkbook.Path
+fnme = "CARES Status.xls"
+slash = "\Databases\"
+ofnme = pth & slash & fnme
+
+Workbooks.Open Filename:=ofnme
+End Sub
+
+Private Sub cateringbutton_Click()
+'Unload Me
+'Application.DisplayFullScreen = False
+'pth = ActiveWorkbook.Path
+'fnme = "Catering Skills.xls"
+'slash = "\Databases\"
+'ofnme = pth & slash & fnme
+'
+'Workbooks.Open Filename:=ofnme
+
+End Sub
+
+Private Sub closebutton_Click()
+Unload Me
+
+Application.DisplayFullScreen = False
+    With ActiveWindow
+        .DisplayGridlines = True
+        .DisplayHeadings = True
+        .DisplayOutline = True
+        .DisplayZeros = True
+        .DisplayHorizontalScrollBar = True
+        .DisplayVerticalScrollBar = True
+        .DisplayWorkbookTabs = True
+    End With
+ActiveWindow.View = xlNormalView
+
+ActiveWorkbook.Close savechanges:=False
+Application.Quit
+Application.Quit
+
+End Sub
+
+Private Sub cmbutton_Click()
+'Unload Me
+'Application.DisplayFullScreen = False
+'pth = ActiveWorkbook.Path
+'fnme = "cleaning matters.xls"
+'slash = "\Databases\"
+'ofnme = pth & slash & fnme
+'
+'Workbooks.Open Filename:=ofnme
+
+End Sub
+
+Private Sub compliancebutton_Click()
+Unload Me
+Application.DisplayFullScreen = False
+pth = ActiveWorkbook.Path
+fnme = "Training Status.xls"
+slash = "\Databases\"
+ofnme = pth & slash & fnme
+
+Workbooks.Open Filename:=ofnme
+
+End Sub
+
+
+
+Private Sub helpdeskbutton_Click()
+'Unload Me
+'Application.DisplayFullScreen = False
+'pth = ActiveWorkbook.Path
+'fnme = "Helpdesk Skills.xls"
+'slash = "\Databases\"
+'ofnme = pth & slash & fnme
+'
+'Workbooks.Open Filename:=ofnme
+
+End Sub
+
+'Private Sub hotelservicesbutton_Click()
+'Unload Me
+'Application.DisplayFullScreen = False
+'pth = ActiveWorkbook.Path
+'fnme = "Hotel Services Skills.xls"
+'slash = "\Databases\"
+'ofnme = pth & slash & fnme
+'
+'Workbooks.Open Filename:=ofnme
+'
+'End Sub
+
+Private Sub ioshbutton_Click()
+Unload Me
+Application.DisplayFullScreen = False
+pth = ActiveWorkbook.Path
+fnme = "iosh.xls"
+slash = "\Databases\"
+ofnme = pth & slash & fnme
+
+Workbooks.Open Filename:=ofnme
+
+End Sub
+
+Private Sub linenbutton_Click()
+'Unload Me
+'Application.DisplayFullScreen = False
+'pth = ActiveWorkbook.Path
+'fnme = "Linen Skills.xls"
+'slash = "\Databases\"
+'ofnme = pth & slash & fnme
+'
+'Workbooks.Open Filename:=ofnme
+
+End Sub
+
+Private Sub logo_Click()
+Unload Me
+
+Application.DisplayFullScreen = False
+    With ActiveWindow
+        .DisplayGridlines = True
+        .DisplayHeadings = True
+        .DisplayOutline = True
+        .DisplayZeros = True
+        .DisplayHorizontalScrollBar = True
+        .DisplayVerticalScrollBar = True
+        .DisplayWorkbookTabs = True
+    End With
+ActiveWindow.View = xlNormalView
+End Sub
+
+Private Sub monitoringbutton_Click()
+'Unload Me
+'Application.DisplayFullScreen = False
+'pth = ActiveWorkbook.Path
+'fnme = "Monitoring Skills.xls"
+'slash = "\Databases\"
+'ofnme = pth & slash & fnme
+'
+'Workbooks.Open Filename:=ofnme
+
+End Sub
+
+Private Sub nvqbutton_Click()
+Unload Me
+Application.DisplayFullScreen = False
+pth = ActiveWorkbook.Path
+fnme = "NVQ.xls"
+slash = "\Databases\"
+ofnme = pth & slash & fnme
+
+Workbooks.Open Filename:=ofnme
+
+End Sub
+
+Private Sub portersbutton_Click()
+'Unload Me
+'Application.DisplayFullScreen = False
+'pth = ActiveWorkbook.Path
+'fnme = "Porters Skills.xls"
+'slash = "\Databases\"
+'ofnme = pth & slash & fnme
+'
+'Workbooks.Open Filename:=ofnme
+
+End Sub
+
+Private Sub sdpbutton_Click()
+Unload Me
+Application.DisplayFullScreen = False
+pth = ActiveWorkbook.Path
+fnme = "Supervisor Development Program Tracking.xls"
+slash = "\Databases\"
+ofnme = pth & slash & fnme
+
+Workbooks.Open Filename:=ofnme
+
+End Sub
+Private Sub tnabutton_Click()
+Unload Me
+Application.DisplayFullScreen = False
+pth = ActiveWorkbook.Path
+fnme = "TNA.xls"
+slash = "\Databases\"
+ofnme = pth & slash & fnme
+
+Workbooks.Open Filename:=ofnme
+
+End Sub
+
+Private Sub UserForm_Initialize()
+With ActiveWindow
+        .DisplayGridlines = False
+        .DisplayHeadings = False
+        .DisplayOutline = False
+        .DisplayZeros = False
+        .DisplayHorizontalScrollBar = False
+        .DisplayVerticalScrollBar = False
+        .DisplayWorkbookTabs = False
+    End With
+    Application.ShowStartupDialog = False
+    Application.DisplayFullScreen = True
+    Application.CommandBars("Full Screen").Visible = False
+    ActiveWindow.View = xlPageBreakPreview
+End Sub
+Private Sub machinebutton_Click()
+Unload Me
+Application.DisplayFullScreen = False
+pth = ActiveWorkbook.Path
+fnme = "Machine Skills.xls"
+slash = "\Databases\"
+ofnme = pth & slash & fnme
+
+Workbooks.Open Filename:=ofnme
+
+End Sub
+
+-----------------------------------------------------------------------------------------
+
+'thisworkbook
+
+
+
+
+Private Sub Workbook_BeforeClose(Cancel As Boolean)
+Workbooks("Training Dashboard.xls").Close savechanges:=False
+End Sub
+
+Private Sub Workbook_Open()
+dashboard.Show False
+End Sub
+
+Private Sub Workbook_BeforeSave(ByVal SaveAsUI As Boolean, Cancel As Boolean)
+Dim pwd As String
+pwd = InputBox("Enter Password", "Security Violation!")
+        If pwd = "Pa55word" Or pwd = "5au5age5" Then
+        Cancel = False
+        Else
+        MsgBox "You Do Not Have The Necessary Permission To Save This File", vbOKOnly, "Security Violation!"
+        Cancel = True
+        End If
+End Sub
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------
+
+'module1
+
+Sub showback()
+
+    Application.DisplayFullScreen = False
+    With ActiveWindow
+        .DisplayGridlines = True
+        .DisplayHeadings = True
+        .DisplayOutline = True
+        .DisplayZeros = True
+        .DisplayHorizontalScrollBar = True
+        .DisplayVerticalScrollBar = True
+        .DisplayWorkbookTabs = True
+    End With
+ActiveWindow.View = xlNormalView
+
+End Sub
+
+------------------------------------------------------------------------------------------------------------------------------------------------------
+
+'module2
+
+Sub dashshow()
+
+With ActiveWindow
+        .DisplayGridlines = False
+        .DisplayHeadings = False
+        .DisplayOutline = False
+        .DisplayZeros = False
+        .DisplayHorizontalScrollBar = False
+        .DisplayVerticalScrollBar = False
+        .DisplayWorkbookTabs = False
+    End With
+    Application.ShowStartupDialog = False
+    Application.DisplayFullScreen = True
+    Application.CommandBars("Full Screen").Visible = False
+    ActiveWindow.View = xlPageBreakPreview
+dashboard.Show False
+
+End Sub
+
+

@@ -1,0 +1,2883 @@
+'Training Status
+
+'reporting
+
+Option Explicit
+Private Sub Worksheet_Deactivate()
+Application.CommandBars("Compliance").Visible = True
+report.Range("a3:f6000").Delete
+report.Range("d2").ClearContents
+report.Range("a1").ClearContents
+End Sub
+
+Private Sub Worksheet_Activate()
+Application.CommandBars("Compliance").Visible = False
+End Sub
+
+
+-----------------------------------------------------------------------------------
+
+'status
+
+Private Sub Worksheet_Deactivate()
+Application.CommandBars("Compliance").Visible = True
+End Sub
+
+Private Sub update_Click()
+Application.ScreenUpdating = False
+Application.Run "staffnumbers"
+Application.Run "sheetone"
+Application.Run "sheettwo"
+Application.Run "sheetthree"
+Application.Run "sheetfour"
+Application.Run "sheetfive"
+Application.Run "sheetsix"
+Application.Run "sheetseven"
+Application.Run "sheeteight"
+Application.Run "sheetnine"
+Application.Run "sheetten"
+Application.Run "sitetotals"
+Application.ScreenUpdating = True
+
+End Sub
+Private Sub Worksheet_Activate()
+Application.CommandBars("Compliance").Visible = False
+Application.ScreenUpdating = False
+Application.Run "staffnumbers"
+Application.Run "sheetone"
+Application.Run "sheettwo"
+Application.Run "sheetthree"
+Application.Run "sheetfour"
+Application.Run "sheetfive"
+Application.Run "sheetsix"
+Application.Run "sheetseven"
+Application.Run "sheeteight"
+Application.Run "sheetnine"
+Application.Run "sheetten"
+Application.Run "sitetotals"
+Application.ScreenUpdating = True
+End Sub
+
+--------------------------------------------------------------------------------------------
+
+'thisworkbook
+
+Private Sub Workbook_BeforeClose(Cancel As Boolean)
+ActiveWorkbook.Close savechanges:=False
+
+With ActiveWorkbook
+Application.Run "toolbarclose"
+Application.Run "hidestatus"
+End With
+On Error Resume Next
+Application.Run "'Training Dashboard.xls'!dashshow"
+
+'Workbooks("Training Status.xls").Close savechanges:=False
+'Application.Run "'Training Status.xls'!toolbarclose"
+'Application.Run "'Training Status.xls'!hidestatus"
+'On Error Resume Next
+'Application.Run "'Training Dashboard.xls'!dashshow"
+End Sub
+
+Private Sub Workbook_BeforeSave(ByVal SaveAsUI As Boolean, Cancel As Boolean)
+Dim pwd As String
+protectform.Show
+pwd = Sheet1.Cells(1, 1).Value
+If pwd = "Pa55word" Or pwd = "5au5age5" Then
+Cancel = False
+Else
+MsgBox " You do not have authority to save this file", vbOKOnly, "Security Violation!"
+Cancel = True
+End If
+Sheet1.Cells(1, 1).Value = ""
+End Sub
+
+Private Sub Workbook_Open()
+splash.Show
+On Error Resume Next
+Application.DisplayFullScreen = False
+Application.Run "toolbar"
+Application.Run "hidestatus"
+Sheet1.Cells(4, 1).Activate
+
+End Sub
+
+
+------------------------------------------------------------------------------------------------------------------
+
+'dataform
+
+Dim a As Integer, x As Integer
+'dim fntev As String, fnv As String, snv As String, rolev As String, startdatev As Date
+'Dim indcurv As String, cjscurv As Date, hascurv As Date, firecurv As Date, cscurv As Date, riccurv As String
+'Dim fscurv As Date, iccurv As Date, fhcurv As String, haspcurv As Date, fspcurv As Date, icpcurv As Date
+'Dim indnewv As String, cjsnewv As Date, hasnewv As Date, firenewv As Date, csnewv As Date, ricnewv As String, fsnewv As Date
+'Dim icnewv As Date, fhnewv As String, haspnewv As Date, fspnewv As Date, icpnewv As Date
+
+Option Explicit
+
+Private Sub amendbut_Click()
+a = ActiveCell.Row
+dataform.startdate = Format(dataform.startdate.Value, "dd/mm/yy")
+ActiveSheet.Cells(a, 6).Value = dataform.startdate.Value
+ActiveSheet.Cells(a, 6) = Format(ActiveSheet.Cells(a, 6), "dd/mm/yy")
+ActiveSheet.Cells(a, 1).Value = dataform.fn.Value
+ActiveSheet.Cells(a, 2).Value = dataform.sn.Value
+ActiveSheet.Cells(a, 3).Value = dataform.role.Value
+End Sub
+
+Private Sub fsp_Click()
+
+a = ActiveCell.Row
+dataform.fspnew = Format(dataform.fspnew.Value, "dd/mm/yy")
+If dataform.fspnew.Value <> "" Then
+ActiveSheet.Cells(a, 15) = dataform.fspnew.Value
+ActiveSheet.Cells(a, 15) = Format(ActiveSheet.Cells(a, 15), "dd/mm/yy")
+dataform.fspcur.Value = dataform.fspnew.Value
+End If
+End Sub
+
+Private Sub fspwipe_Click()
+
+a = ActiveCell.Row
+ActiveSheet.Cells(a, 15).ClearContents
+dataform.fspcur.Value = ""
+End Sub
+
+Private Sub canc_Click()
+Cells(1, 3).Value = ""
+Unload Me
+End Sub
+
+Private Sub fh_Click()
+
+a = ActiveCell.Row
+If dataform.fhnew.Value <> "" Then
+ActiveSheet.Cells(a, 4) = dataform.fhnew.Value
+dataform.fhcur.Value = dataform.fhnew.Value
+End If
+End Sub
+
+Private Sub fhwipe_Click()
+
+a = ActiveCell.Row
+ActiveSheet.Cells(a, 4).Value = "No"
+dataform.fhcur.Value = "No"
+End Sub
+
+Private Sub cjs_Click()
+
+a = ActiveCell.Row
+dataform.cjsnew = Format(dataform.cjsnew.Value, "dd/mm/yy")
+If dataform.cjsnew.Value <> "" Then
+ActiveSheet.Cells(a, 8) = dataform.cjsnew.Value
+ActiveSheet.Cells(a, 8) = Format(ActiveSheet.Cells(a, 8), "dd/mm/yy")
+dataform.cjscur.Value = dataform.cjsnew.Value
+End If
+End Sub
+
+Private Sub cjswipe_Click()
+
+a = ActiveCell.Row
+ActiveSheet.Cells(a, 8).ClearContents
+dataform.cjscur.Value = ""
+End Sub
+
+Private Sub cs_Click()
+
+a = ActiveCell.Row
+dataform.csnew = Format(dataform.csnew.Value, "dd/mm/yy")
+If dataform.csnew.Value <> "" Then
+ActiveSheet.Cells(a, 11) = dataform.csnew.Value
+ActiveSheet.Cells(a, 11) = Format(ActiveSheet.Cells(a, 11), "dd/mm/yy")
+dataform.cscur.Value = dataform.csnew.Value
+End If
+End Sub
+
+Private Sub cswipe_Click()
+
+a = ActiveCell.Row
+ActiveSheet.Cells(a, 11).ClearContents
+dataform.cscur.Value = ""
+End Sub
+
+Private Sub fire_Click()
+
+a = ActiveCell.Row
+dataform.firenew = Format(dataform.firenew.Value, "dd/mm/yy")
+If dataform.firenew.Value <> "" Then
+ActiveSheet.Cells(a, 10) = dataform.firenew.Value
+ActiveSheet.Cells(a, 10) = Format(ActiveSheet.Cells(a, 10), "dd/mm/yy")
+dataform.firecur.Value = dataform.firenew.Value
+End If
+End Sub
+
+Private Sub fnsearch_Click()
+Formatdatetime (Date = [vbShortDate])
+
+On Error Resume Next
+
+ActiveSheet.Cells.find(what:=dataform.fnte.Value, after:=ActiveCell, LookIn:=xlValues, lookat:=xlPart, _
+searchorder:=xlByRows, searchdirection:=xlNext, MatchCase:=False, searchformat:=False).Activate
+
+a = ActiveCell.Row
+Cells(1, 3).Value = a
+dataform.fn.Value = ActiveSheet.Cells(a, 1).Value
+dataform.sn.Value = ActiveSheet.Cells(a, 2).Value
+dataform.role.Value = ActiveSheet.Cells(a, 3).Value
+dataform.fhcur.Value = ActiveSheet.Cells(a, 4).Value
+dataform.riccur.Value = ActiveSheet.Cells(a, 5).Value
+dataform.startdate.Value = ActiveSheet.Cells(a, 6).Value
+dataform.startdate = Format(ActiveSheet.Cells(a, 6), "dd/mm/yy")
+dataform.indcur.Value = ActiveSheet.Cells(a, 7).Value
+dataform.indcur = Format(ActiveSheet.Cells(a, 7), "dd/mm/yy")
+dataform.cjscur.Value = ActiveSheet.Cells(a, 8).Value
+dataform.cjscur = Format(ActiveSheet.Cells(a, 8), "dd/mm/yy")
+dataform.hascur.Value = ActiveSheet.Cells(a, 9).Value
+dataform.hascur = Format(ActiveSheet.Cells(a, 9), "dd/mm/yy")
+dataform.firecur.Value = ActiveSheet.Cells(a, 10).Value
+dataform.firecur = Format(ActiveSheet.Cells(a, 10), "dd/mm/yy")
+dataform.cscur.Value = ActiveSheet.Cells(a, 11).Value
+dataform.cscur = Format(ActiveSheet.Cells(a, 11), "dd/mm/yy")
+dataform.fscur.Value = ActiveSheet.Cells(a, 12).Value
+dataform.fscur = Format(ActiveSheet.Cells(a, 12), "dd/mm/yy")
+dataform.iccur.Value = ActiveSheet.Cells(a, 13).Value
+dataform.iccur = Format(ActiveSheet.Cells(a, 13), "dd/mm/yy")
+dataform.haspcur.Value = ActiveSheet.Cells(a, 14).Value
+dataform.haspcur = Format(ActiveSheet.Cells(a, 14), "dd/mm/yy")
+dataform.fspcur.Value = ActiveSheet.Cells(a, 15).Value
+dataform.fspcur = Format(ActiveSheet.Cells(a, 15), "dd/mm/yy")
+dataform.icpcur.Value = ActiveSheet.Cells(a, 16).Value
+dataform.icpcur = Format(ActiveSheet.Cells(a, 16), "dd/mm/yy")
+
+
+End Sub
+
+Private Sub fs_Click()
+
+a = ActiveCell.Row
+dataform.fsnew = Format(dataform.fsnew.Value, "dd/mm/yy")
+If dataform.fsnew.Value <> "" Then
+ActiveSheet.Cells(a, 12) = dataform.fsnew.Value
+ActiveSheet.Cells(a, 12) = Format(ActiveSheet.Cells(a, 12), "dd/mm/yy")
+dataform.fscur.Value = dataform.fsnew.Value
+End If
+End Sub
+
+Private Sub fswipe_Click()
+
+a = ActiveCell.Row
+ActiveSheet.Cells(a, 12).ClearContents
+dataform.fscur.Value = ""
+End Sub
+
+Private Sub firewipe_Click()
+
+a = ActiveCell.Row
+ActiveSheet.Cells(a, 10).ClearContents
+dataform.firecur.Value = ""
+End Sub
+
+Private Sub has_Click()
+
+a = ActiveCell.Row
+dataform.hasnew = Format(dataform.hasnew.Value, "dd/mm/yy")
+If dataform.hasnew.Value <> "" Then
+ActiveSheet.Cells(a, 9) = dataform.hasnew.Value
+ActiveSheet.Cells(a, 9) = Format(ActiveSheet.Cells(a, 9), "dd/mm/yy")
+dataform.hascur.Value = dataform.hasnew.Value
+End If
+End Sub
+
+Private Sub haswipe_Click()
+
+a = ActiveCell.Row
+ActiveSheet.Cells(a, 9).ClearContents
+dataform.hascur.Value = ""
+End Sub
+
+Private Sub hasp_Click()
+
+a = ActiveCell.Row
+dataform.haspnew = Format(dataform.haspnew.Value, "dd/mm/yy")
+If dataform.haspnew.Value <> "" Then
+ActiveSheet.Cells(a, 14) = dataform.haspnew.Value
+ActiveSheet.Cells(a, 14) = Format(ActiveSheet.Cells(a, 14), "dd/mm/yy")
+dataform.haspcur.Value = dataform.haspnew.Value
+End If
+End Sub
+
+Private Sub haspwipe_Click()
+
+a = ActiveCell.Row
+ActiveSheet.Cells(a, 14).ClearContents
+dataform.haspcur.Value = ""
+End Sub
+
+Private Sub ic_Click()
+
+a = ActiveCell.Row
+dataform.icnew = Format(dataform.icnew.Value, "dd/mm/yy")
+If dataform.icnew.Value <> "" Then
+ActiveSheet.Cells(a, 13) = dataform.icnew.Value
+ActiveSheet.Cells(a, 13) = Format(ActiveSheet.Cells(a, 13), "dd/mm/yy")
+dataform.iccur.Value = dataform.icnew.Value
+End If
+End Sub
+
+Private Sub icwipe_Click()
+
+a = ActiveCell.Row
+ActiveSheet.Cells(a, 13).ClearContents
+dataform.iccur.Value = ""
+End Sub
+
+Private Sub ind_Click()
+
+a = ActiveCell.Row
+dataform.indnew = Format(dataform.indnew.Value, "dd/mm/yy")
+If dataform.indnew.Value <> "" Then
+ActiveSheet.Cells(a, 7) = dataform.indnew.Value
+ActiveSheet.Cells(a, 7) = Format(ActiveSheet.Cells(a, 7), "dd/mm/yy")
+dataform.indcur.Value = dataform.indnew.Value
+End If
+End Sub
+
+
+Private Sub indwipe_Click()
+a = ActiveCell.Row
+ActiveSheet.Cells(a, 7).ClearContents
+dataform.indcur.Value = ""
+End Sub
+
+Private Sub pbut_Click()
+dataform.PrintForm
+End Sub
+
+Private Sub ric_Click()
+a = ActiveCell.Row
+If dataform.ricnew.Value <> "" Then
+ActiveSheet.Cells(a, 5) = dataform.ricnew.Value
+dataform.riccur.Value = dataform.ricnew.Value
+End If
+End Sub
+
+Private Sub ricwipe_Click()
+a = ActiveCell.Row
+ActiveSheet.Cells(a, 5).Value = "No"
+dataform.riccur.Value = "No"
+End Sub
+
+Private Sub icp_Click()
+a = ActiveCell.Row
+dataform.icpnew = Format(dataform.icpnew.Value, "dd/mm/yy")
+If dataform.icpnew.Value <> "" Then
+ActiveSheet.Cells(a, 16) = dataform.icpnew.Value
+ActiveSheet.Cells(a, 16) = Format(ActiveSheet.Cells(a, 16), "dd/mm/yy")
+dataform.icpcur.Value = dataform.icpnew.Value
+End If
+End Sub
+Private Sub icpwipe_click()
+a = ActiveCell.Row
+ActiveSheet.Cells(a, 16).ClearContents
+dataform.icpcur.Value = ""
+End Sub
+
+Private Sub SpinButton1_SpinDown()
+Cells(1, 3).Value = Cells(1, 3).Value + 1
+
+x = Cells(1, 3).Value
+ActiveSheet.Cells(x, 1).Activate
+
+dataform.fn.Value = ActiveSheet.Cells(x, 1).Value
+dataform.sn.Value = ActiveSheet.Cells(x, 2).Value
+dataform.role.Value = ActiveSheet.Cells(x, 3).Value
+dataform.startdate.Value = ActiveSheet.Cells(x, 6).Value
+dataform.startdate = Format(ActiveSheet.Cells(x, 6), "dd/mm/yy")
+dataform.indcur.Value = ActiveSheet.Cells(x, 7).Value
+dataform.indcur = Format(ActiveSheet.Cells(x, 7), "dd/mm/yy")
+dataform.cjscur.Value = ActiveSheet.Cells(x, 8).Value
+dataform.cjscur = Format(ActiveSheet.Cells(x, 8), "dd/mm/yy")
+dataform.hascur.Value = ActiveSheet.Cells(x, 9).Value
+dataform.hascur = Format(ActiveSheet.Cells(x, 9), "dd/mm/yy")
+dataform.firecur.Value = ActiveSheet.Cells(x, 10).Value
+dataform.firecur = Format(ActiveSheet.Cells(x, 10), "dd/mm/yy")
+dataform.cscur.Value = ActiveSheet.Cells(x, 11).Value
+dataform.cscur = Format(ActiveSheet.Cells(x, 11), "dd/mm/yy")
+dataform.fscur.Value = ActiveSheet.Cells(x, 12).Value
+dataform.fscur = Format(ActiveSheet.Cells(x, 12), "dd/mm/yy")
+dataform.iccur.Value = ActiveSheet.Cells(x, 13).Value
+dataform.iccur = Format(ActiveSheet.Cells(x, 13), "dd/mm/yy")
+dataform.fhcur.Value = ActiveSheet.Cells(x, 4).Value
+dataform.haspcur.Value = ActiveSheet.Cells(x, 14).Value
+dataform.haspcur = Format(ActiveSheet.Cells(x, 14), "dd/mm/yy")
+dataform.fspcur.Value = ActiveSheet.Cells(x, 15).Value
+dataform.fspcur = Format(ActiveSheet.Cells(x, 15), "dd/mm/yy")
+dataform.riccur.Value = ActiveSheet.Cells(x, 5).Value
+dataform.icpcur.Value = ActiveSheet.Cells(x, 16).Value
+dataform.icpcur = Format(ActiveSheet.Cells(x, 16), "dd/mm/yy")
+End Sub
+
+Private Sub SpinButton1_SpinUp()
+Cells(1, 3).Value = Cells(1, 3).Value - 1
+If Cells(1, 3).Value < 4 Then Cells(1, 3).Value = "4"
+
+x = Cells(1, 3).Value
+ActiveSheet.Cells(x, 1).Activate
+
+dataform.fn.Value = ActiveSheet.Cells(x, 1).Value
+dataform.sn.Value = ActiveSheet.Cells(x, 2).Value
+dataform.role.Value = ActiveSheet.Cells(x, 3).Value
+dataform.startdate.Value = ActiveSheet.Cells(x, 6).Value
+dataform.startdate = Format(ActiveSheet.Cells(x, 6), "dd/mm/yy")
+dataform.indcur.Value = ActiveSheet.Cells(x, 7).Value
+dataform.indcur = Format(ActiveSheet.Cells(x, 7), "dd/mm/yy")
+dataform.cjscur.Value = ActiveSheet.Cells(x, 8).Value
+dataform.cjscur = Format(ActiveSheet.Cells(x, 8), "dd/mm/yy")
+dataform.hascur.Value = ActiveSheet.Cells(x, 9).Value
+dataform.hascur = Format(ActiveSheet.Cells(x, 9), "dd/mm/yy")
+dataform.firecur.Value = ActiveSheet.Cells(x, 10).Value
+dataform.firecur = Format(ActiveSheet.Cells(x, 10), "dd/mm/yy")
+dataform.cscur.Value = ActiveSheet.Cells(x, 11).Value
+dataform.cscur = Format(ActiveSheet.Cells(x, 11), "dd/mm/yy")
+dataform.fscur.Value = ActiveSheet.Cells(x, 12).Value
+dataform.fscur = Format(ActiveSheet.Cells(x, 12), "dd/mm/yy")
+dataform.iccur.Value = ActiveSheet.Cells(x, 13).Value
+dataform.iccur = Format(ActiveSheet.Cells(x, 13), "dd/mm/yy")
+dataform.fhcur.Value = ActiveSheet.Cells(x, 4).Value
+dataform.haspcur.Value = ActiveSheet.Cells(x, 14).Value
+dataform.haspcur = Format(ActiveSheet.Cells(x, 14), "dd/mm/yy")
+dataform.fspcur.Value = ActiveSheet.Cells(x, 15).Value
+dataform.fspcur = Format(ActiveSheet.Cells(x, 15), "dd/mm/yy")
+dataform.riccur.Value = ActiveSheet.Cells(x, 5).Value
+dataform.icpcur.Value = ActiveSheet.Cells(x, 16).Value
+dataform.icpcur = Format(ActiveSheet.Cells(x, 16), "dd/mm/yy")
+End Sub
+
+Private Sub UserForm_Initialize()
+Cells(1, 3).Value = "3"
+End Sub
+
+----------------------------------------------------------------------------------------------------
+
+'newentry
+
+Private Sub okbutton_Click()
+Dim x As Integer, fn As String, sn As String, role As String, stdate As Date, indbox As Date
+
+If newentry.fn <> "" Then
+
+If Cells(4, 1) <> "" Then
+
+ActiveSheet.Range("a3").End(xlDown).Select
+x = ActiveCell.Row + 1
+ActiveSheet.Cells(x, 1).Value = newentry.fn.Value
+ActiveSheet.Cells(x, 2).Value = newentry.sn.Value
+ActiveSheet.Cells(x, 3).Value = newentry.role.Value
+ActiveSheet.Cells(x, 6).Value = newentry.stdate.Value
+ActiveSheet.Cells(x, 6) = Format(ActiveSheet.Cells(x, 6), "dd/mm/yy")
+ActiveSheet.Cells(x, 7).Value = newentry.indbox.Value
+ActiveSheet.Cells(x, 7) = Format(ActiveSheet.Cells(x, 7), "dd/mm/yy")
+    If fcbox = True Then ActiveSheet.Cells(x, 4).Value = "Yes"
+    If icbox = True Then ActiveSheet.Cells(x, 5).Value = "Yes"
+    If fcbox = False Then ActiveSheet.Cells(x, 4).Value = "No"
+    If icbox = False Then ActiveSheet.Cells(x, 5).Value = "No"
+    
+Else
+
+ActiveSheet.Cells(4, 1).Value = newentry.fn.Value
+ActiveSheet.Cells(4, 2).Value = newentry.sn.Value
+ActiveSheet.Cells(4, 3).Value = newentry.role.Value
+ActiveSheet.Cells(4, 6).Value = newentry.stdate.Value
+ActiveSheet.Cells(4, 6) = Format(ActiveSheet.Cells(4, 6), "dd/mm/yy")
+ActiveSheet.Cells(4, 7).Value = newentry.indbox.Value
+ActiveSheet.Cells(4, 7) = Format(ActiveSheet.Cells(4, 7), "dd/mm/yy")
+    If fcbox = True Then ActiveSheet.Cells(4, 4).Value = "Yes"
+    If icbox = True Then ActiveSheet.Cells(4, 5).Value = "Yes"
+    If fcbox = False Then ActiveSheet.Cells(4, 4).Value = "No"
+    If icbox = False Then ActiveSheet.Cells(4, 5).Value = "No"
+    
+End If
+End If
+Unload Me
+End Sub
+
+Private Sub submit_Click()
+Dim x As Integer, fn As String, sn As String, role As String, stdate As Date, indbox As Date
+
+If newentry.fn <> "" Then
+
+If Cells(4, 1) <> "" Then
+
+ActiveSheet.Range("a3").End(xlDown).Select
+x = ActiveCell.Row + 1
+ActiveSheet.Cells(x, 1).Value = newentry.fn.Value
+ActiveSheet.Cells(x, 2).Value = newentry.sn.Value
+ActiveSheet.Cells(x, 3).Value = newentry.role.Value
+ActiveSheet.Cells(x, 6).Value = newentry.stdate.Value
+ActiveSheet.Cells(x, 6) = Format(ActiveSheet.Cells(x, 6), "dd/mm/yy")
+ActiveSheet.Cells(x, 7).Value = newentry.indbox.Value
+ActiveSheet.Cells(x, 7) = Format(ActiveSheet.Cells(x, 7), "dd/mm/yy")
+    If fcbox = True Then ActiveSheet.Cells(x, 4).Value = "Yes"
+    If icbox = True Then ActiveSheet.Cells(x, 5).Value = "Yes"
+    If fcbox = False Then ActiveSheet.Cells(x, 4).Value = "No"
+    If icbox = False Then ActiveSheet.Cells(x, 5).Value = "No"
+Else
+
+ActiveSheet.Cells(4, 1).Value = newentry.fn.Value
+ActiveSheet.Cells(4, 2).Value = newentry.sn.Value
+ActiveSheet.Cells(4, 3).Value = newentry.role.Value
+ActiveSheet.Cells(4, 6).Value = newentry.stdate.Value
+ActiveSheet.Cells(4, 6) = Format(ActiveSheet.Cells(4, 6), "dd/mm/yy")
+ActiveSheet.Cells(4, 7).Value = newentry.indbox.Value
+ActiveSheet.Cells(4, 7) = Format(ActiveSheet.Cells(4, 7), "dd/mm/yy")
+    If fcbox = True Then ActiveSheet.Cells(4, 4).Value = "Yes"
+    If icbox = True Then ActiveSheet.Cells(4, 5).Value = "Yes"
+    If fcbox = False Then ActiveSheet.Cells(4, 4).Value = "No"
+    If icbox = False Then ActiveSheet.Cells(4, 5).Value = "No"
+
+End If
+
+End If
+
+newentry.fn.Value = ""
+newentry.sn.Value = ""
+newentry.role.Value = ""
+newentry.stdate.Value = ""
+newentry.indbox.Value = ""
+newentry.fcbox.Value = False
+newentry.icbox.Value = False
+End Sub
+
+Private Sub Cancelbutton_Click()
+Unload Me
+End Sub
+
+
+-----------------------------------------------------------------------------------------------------
+
+'protectform
+
+Private Sub Cancelbutton_Click()
+Unload Me
+End Sub
+
+Private Sub okbutton_Click()
+Dim pwd As String
+pwd = pwdbox.Value
+Sheet1.Cells(1, 1).Value = pwd
+Unload Me
+End Sub
+
+----------------------------------------------------------------------------------------------------
+
+'splash
+
+Private Sub UserForm_Initialize()
+Application.OnTime Now + TimeValue("00:00:02"), "splashclose"
+Me.BackColor = RGB(240, 3, 127)
+End Sub
+
+-----------------------------------------------------------------------------------------------------
+
+'module1
+
+Dim a As Integer, b As Integer, c As Date, d As Integer, e As Date
+Dim f As Integer, g As Integer, h As Integer, i As Integer, j As Integer
+Dim pyn As Integer, k As Integer, kf As Integer, ki As Integer
+
+Dim dept As String, sbj As String
+Option Explicit
+Sub HealthSafety()
+Application.ScreenUpdating = False
+
+report.Range("a3:f6000").Delete
+report.Range("d2").ClearContents
+report.Range("a1").ClearContents
+b = 3
+k = 0
+For a = 4 To 6000                                           'count number of rows in use
+If ActiveSheet.Cells(a, 1) <> "" Then
+b = b + 1
+k = k + 1
+End If
+Next a
+ActiveSheet.Range(Cells(4, 1), Cells(b, 15)).Sort _
+key1:=Range("B3"), key2:=Range("A3")                        'sorts data a-z surname, firstname
+c = DateValue(Now)
+g = 3
+h = 0
+dept = ActiveSheet.Name
+sbj = ActiveSheet.Range("i3")                                   'i3 = H&S
+For f = 4 To 6000
+    e = Cells(f, 9).Value
+    If Cells(f, 1) <> "" Then
+    d = DateDiff("m", e, c)
+        If d > 12 Or d = 12 Then
+        report.Cells(g, 1) = ActiveSheet.Cells(f, 1).Value
+        report.Cells(g, 2) = ActiveSheet.Cells(f, 2).Value
+        report.Cells(g, 3) = ActiveSheet.Cells(f, 3).Value
+        report.Cells(g, 4) = ActiveSheet.Cells(f, 9).Value      'reference 9 refers to H&S
+        report.Cells(g, 5) = d
+        report.Range("d2") = sbj
+        report.Range("d2").Font.Bold = True
+        report.Range("a1") = dept
+        report.Range("a1").Font.Bold = True
+        g = g + 1
+        End If
+    End If
+Next f
+For i = 3 To 6000
+If report.Cells(i, 1) <> "" Then h = h + 1
+Next i
+j = (((k - h) / k) * 100)
+MsgBox dept & " " & sbj & " Compliance is " & j & "%", vbOKOnly, sbj
+pyn = MsgBox("Do you want a printout of training need?", vbYesNo + vbDefaultButton1, "Print?")
+If pyn = vbYes Then report.PrintOut
+Application.CommandBars("Compliance").Visible = True
+
+Application.ScreenUpdating = True
+End Sub
+
+Sub fire()
+Application.ScreenUpdating = False
+
+report.Range("a3:f6000").Delete
+report.Range("d2").ClearContents
+report.Range("a1").ClearContents
+b = 3
+k = 0
+For a = 4 To 6000                                           'count number of rows in use
+If ActiveSheet.Cells(a, 1) <> "" Then
+b = b + 1
+k = k + 1
+End If
+Next a
+ActiveSheet.Range(Cells(4, 1), Cells(b, 15)).Sort _
+key1:=Range("B3"), key2:=Range("A3")                        'sorts data a-z surname, firstname
+c = DateValue(Now)
+g = 3
+h = 0
+dept = ActiveSheet.Name
+sbj = ActiveSheet.Range("j3")                                   'j3 = Fire
+For f = 4 To 6000
+    e = Cells(f, 10).Value
+    If Cells(f, 1) <> "" Then
+    d = DateDiff("m", e, c)
+        If d > 12 Or d = 12 Then
+        report.Cells(g, 1) = ActiveSheet.Cells(f, 1).Value
+        report.Cells(g, 2) = ActiveSheet.Cells(f, 2).Value
+        report.Cells(g, 3) = ActiveSheet.Cells(f, 3).Value
+        report.Cells(g, 4) = ActiveSheet.Cells(f, 10).Value      'reference 10 refers to Fire
+        report.Cells(g, 5) = d
+        report.Range("d2") = sbj
+        report.Range("d2").Font.Bold = True
+        report.Range("a1") = dept
+        report.Range("a1").Font.Bold = True
+        g = g + 1
+        End If
+    End If
+Next f
+For i = 3 To 6000
+If report.Cells(i, 1) <> "" Then h = h + 1
+Next i
+j = (((k - h) / k) * 100)
+MsgBox dept & " " & sbj & " Compliance is " & j & "%", vbOKOnly, sbj
+pyn = MsgBox("Do you want a printout of training need?", vbYesNo + vbDefaultButton1, "Print?")
+If pyn = vbYes Then report.PrintOut
+Application.CommandBars("Compliance").Visible = True
+Application.ScreenUpdating = True
+End Sub
+
+Sub CustomerService()
+Application.ScreenUpdating = False
+report.Range("a3:f6000").Delete
+report.Range("d2").ClearContents
+report.Range("a1").ClearContents
+b = 3
+k = 0
+For a = 4 To 6000                                           'count number of rows in use
+If ActiveSheet.Cells(a, 1) <> "" Then
+b = b + 1
+k = k + 1
+End If
+Next a
+ActiveSheet.Range(Cells(4, 1), Cells(b, 15)).Sort _
+key1:=Range("B3"), key2:=Range("A3")                        'sorts data a-z surname, firstname
+c = DateValue(Now)
+g = 3
+h = 0
+dept = ActiveSheet.Name
+sbj = ActiveSheet.Range("k3")                                   'k3 = customer service
+For f = 4 To 6000
+    e = Cells(f, 11).Value
+    If Cells(f, 1) <> "" Then
+    d = DateDiff("m", e, c)
+        If d > 12 Or d = 12 Then
+        report.Cells(g, 1) = ActiveSheet.Cells(f, 1).Value
+        report.Cells(g, 2) = ActiveSheet.Cells(f, 2).Value
+        report.Cells(g, 3) = ActiveSheet.Cells(f, 3).Value
+        report.Cells(g, 4) = ActiveSheet.Cells(f, 11).Value      'reference 11 refers to customer
+        report.Cells(g, 5) = d                                  'service
+        report.Range("d2") = sbj
+        report.Range("d2").Font.Bold = True
+        report.Range("a1") = dept
+        report.Range("a1").Font.Bold = True
+        g = g + 1
+        End If
+    End If
+Next f
+For i = 3 To 6000
+If report.Cells(i, 1) <> "" Then h = h + 1
+Next i
+j = (((k - h) / k) * 100)
+MsgBox dept & " " & sbj & " Compliance is " & j & "%", vbOKOnly, sbj
+pyn = MsgBox("Do you want a printout of training need?", vbYesNo + vbDefaultButton1, "Print?")
+If pyn = vbYes Then report.PrintOut
+Application.CommandBars("Compliance").Visible = True
+Application.ScreenUpdating = True
+End Sub
+Sub FoodHygiene()
+Application.ScreenUpdating = False
+
+report.Range("a3:f6000").Delete
+report.Range("d2").ClearContents
+report.Range("a1").ClearContents
+b = 3
+k = 0
+kf = 0
+For a = 4 To 6000                                           'count number of rows in use
+If ActiveSheet.Cells(a, 1) <> "" Then
+b = b + 1
+k = k + 1
+End If
+Next a
+ActiveSheet.Range(Cells(4, 1), Cells(b, 15)).Sort _
+key1:=Range("B3"), key2:=Range("A3")                        'sorts data a-z surname, firstname
+c = DateValue(Now)
+g = 3
+h = 0
+dept = ActiveSheet.Name
+sbj = ActiveSheet.Range("l3")                                   'l3 = food hygiene
+For f = 4 To 6000
+    e = Cells(f, 12).Value
+    If Cells(f, 1) <> "" And Cells(f, 4) = "Yes" Then           'checks role for relevance to
+    kf = kf + 1
+    d = DateDiff("m", e, c)                                     'Food Hygiene
+        If d > 12 Or d = 12 Then
+        report.Cells(g, 1) = ActiveSheet.Cells(f, 1).Value
+        report.Cells(g, 2) = ActiveSheet.Cells(f, 2).Value
+        report.Cells(g, 3) = ActiveSheet.Cells(f, 3).Value
+        report.Cells(g, 4) = ActiveSheet.Cells(f, 12).Value      'reference 12 refers to food
+        report.Cells(g, 5) = d                                   'hygiene
+        report.Range("d2") = sbj
+        report.Range("d2").Font.Bold = True
+        report.Range("a1") = dept
+        report.Range("a1").Font.Bold = True
+        g = g + 1
+        End If
+    End If
+Next f
+For i = 3 To 6000
+If report.Cells(i, 1) <> "" Then h = h + 1
+Next i
+j = (((kf - h) / kf) * 100)
+MsgBox dept & " " & sbj & " Compliance is " & j & "%", vbOKOnly, sbj
+pyn = MsgBox("Do you want a printout of training need?", vbYesNo + vbDefaultButton1, "Print?")
+If pyn = vbYes Then report.PrintOut
+Application.CommandBars("Compliance").Visible = True
+Application.ScreenUpdating = True
+End Sub
+Sub InfectionControl()
+Application.ScreenUpdating = False
+
+report.Range("a3:f6000").Delete
+report.Range("d2").ClearContents
+report.Range("a1").ClearContents
+b = 3
+k = 0
+ki = 0
+For a = 4 To 6000                                           'count number of rows in use
+If ActiveSheet.Cells(a, 1) <> "" Then
+b = b + 1
+k = k + 1
+End If
+Next a
+ActiveSheet.Range(Cells(4, 1), Cells(b, 15)).Sort _
+key1:=Range("B3"), key2:=Range("A3")                        'sorts data a-z surname, firstname
+c = DateValue(Now)
+g = 3
+h = 0
+dept = ActiveSheet.Name
+sbj = ActiveSheet.Range("m3")                                   'm3 = Infection Control
+For f = 4 To 6000
+    e = Cells(f, 13).Value
+    If Cells(f, 1) <> "" And Cells(f, 5) = "Yes" Then
+    ki = ki + 1
+    d = DateDiff("m", e, c)
+        If d > 12 Or d = 12 Then
+        report.Cells(g, 1) = ActiveSheet.Cells(f, 1).Value
+        report.Cells(g, 2) = ActiveSheet.Cells(f, 2).Value
+        report.Cells(g, 3) = ActiveSheet.Cells(f, 3).Value
+        report.Cells(g, 4) = ActiveSheet.Cells(f, 13).Value      'reference 13 refers to Infection
+        report.Cells(g, 5) = d                                   'Control
+        report.Range("d2") = sbj
+        report.Range("d2").Font.Bold = True
+        report.Range("a1") = dept
+        report.Range("a1").Font.Bold = True
+        g = g + 1
+        End If
+    End If
+Next f
+For i = 3 To 6000
+If report.Cells(i, 1) <> "" Then h = h + 1
+Next i
+j = (((ki - h) / ki) * 100)
+MsgBox dept & " " & sbj & " Compliance is " & j & "%", vbOKOnly, sbj
+pyn = MsgBox("Do you want a printout of training need?", vbYesNo + vbDefaultButton1, "Print?")
+If pyn = vbYes Then report.PrintOut
+Application.CommandBars("Compliance").Visible = True
+Application.ScreenUpdating = True
+End Sub
+
+Public Sub bfsp()
+Application.ScreenUpdating = False
+
+report.Range("a3:f6000").Delete
+report.Range("d2").ClearContents
+report.Range("a1").ClearContents
+b = 3
+k = 0
+kf = 0
+For a = 4 To 6000                                           'count number of rows in use
+If ActiveSheet.Cells(a, 1) <> "" Then
+b = b + 1
+k = k + 1
+End If
+Next a
+ActiveSheet.Range(Cells(4, 1), Cells(b, 15)).Sort _
+key1:=Range("B3"), key2:=Range("A3")                        'sorts data a-z surname, firstname
+c = DateValue(Now)
+g = 3
+h = 0
+dept = ActiveSheet.Name
+sbj = ActiveSheet.Range("o3")                                   'o3 = fs passport
+For f = 4 To 6000
+    e = Cells(f, 15).Value
+    If Cells(f, 1) <> "" And Cells(f, 4) = "Yes" Then           'checks role for relevance to
+    kf = kf + 1
+    d = DateDiff("m", e, c)                                     'Food Hygiene
+        If d > 12 Or d = 12 Then
+        report.Cells(g, 1) = ActiveSheet.Cells(f, 1).Value
+        report.Cells(g, 2) = ActiveSheet.Cells(f, 2).Value
+        report.Cells(g, 3) = ActiveSheet.Cells(f, 3).Value
+        report.Cells(g, 4) = ActiveSheet.Cells(f, 15).Value      'reference 15 refers to food
+        report.Cells(g, 5) = d                                   'safety passport
+        report.Range("d2") = sbj
+        report.Range("d2").Font.Bold = True
+        report.Range("a1") = dept
+        report.Range("a1").Font.Bold = True
+        g = g + 1
+        End If
+    End If
+Next f
+For i = 3 To 6000
+If report.Cells(i, 1) <> "" Then h = h + 1
+Next i
+j = (((kf - h) / kf) * 100)
+MsgBox dept & " " & sbj & " Compliance is " & j & "%", vbOKOnly, sbj
+pyn = MsgBox("Do you want a printout of training need?", vbYesNo + vbDefaultButton1, "Print?")
+If pyn = vbYes Then report.PrintOut
+Application.CommandBars("Compliance").Visible = True
+Application.ScreenUpdating = True
+End Sub
+
+Public Sub hsp()
+Application.ScreenUpdating = False
+
+report.Range("a3:f6000").Delete
+report.Range("d2").ClearContents
+report.Range("a1").ClearContents
+b = 3
+k = 0
+For a = 4 To 6000                                           'count number of rows in use
+If ActiveSheet.Cells(a, 1) <> "" Then
+b = b + 1
+k = k + 1
+End If
+Next a
+ActiveSheet.Range(Cells(4, 1), Cells(b, 15)).Sort _
+key1:=Range("B3"), key2:=Range("A3")                        'sorts data a-z surname, firstname
+c = DateValue(Now)
+g = 3
+h = 0
+dept = ActiveSheet.Name
+sbj = ActiveSheet.Range("n3")                                   'n3 = H&S passport
+For f = 4 To 6000
+    e = Cells(f, 14).Value
+    If Cells(f, 1) <> "" Then
+    d = DateDiff("m", e, c)
+        If d > 12 Or d = 12 Then
+        report.Cells(g, 1) = ActiveSheet.Cells(f, 1).Value
+        report.Cells(g, 2) = ActiveSheet.Cells(f, 2).Value
+        report.Cells(g, 3) = ActiveSheet.Cells(f, 3).Value
+        report.Cells(g, 4) = ActiveSheet.Cells(f, 14).Value      'reference 14 refers to H&S passport
+        report.Cells(g, 5) = d
+        report.Range("d2") = sbj
+        report.Range("d2").Font.Bold = True
+        report.Range("a1") = dept
+        report.Range("a1").Font.Bold = True
+        g = g + 1
+        End If
+    End If
+Next f
+For i = 3 To 6000
+If report.Cells(i, 1) <> "" Then h = h + 1
+Next i
+j = (((k - h) / k) * 100)
+MsgBox dept & " " & sbj & " Compliance is " & j & "%", vbOKOnly, sbj
+pyn = MsgBox("Do you want a printout of training need?", vbYesNo + vbDefaultButton1, "Print?")
+If pyn = vbYes Then report.PrintOut
+Application.CommandBars("Compliance").Visible = True
+Application.ScreenUpdating = True
+End Sub
+Sub coreskills()
+Application.ScreenUpdating = False
+
+report.Range("a3:f6000").Delete
+report.Range("d2").ClearContents
+report.Range("a1").ClearContents
+b = 3
+k = 0
+For a = 4 To 6000                                           'count number of rows in use
+If ActiveSheet.Cells(a, 1) <> "" Then
+b = b + 1
+k = k + 1
+End If
+Next a
+ActiveSheet.Range(Cells(4, 1), Cells(b, 15)).Sort _
+key1:=Range("B3"), key2:=Range("A3")                        'sorts data a-z surname, firstname
+c = DateValue(Now)
+g = 3
+h = 0
+dept = ActiveSheet.Name
+sbj = ActiveSheet.Range("h3")                                   'h3 = core skills
+For f = 4 To 6000
+    e = Cells(f, 8).Value
+    If Cells(f, 1) <> "" Then
+    d = DateDiff("m", e, c)
+        If d > 12 Or d = 12 Then
+        report.Cells(g, 1) = ActiveSheet.Cells(f, 1).Value
+        report.Cells(g, 2) = ActiveSheet.Cells(f, 2).Value
+        report.Cells(g, 3) = ActiveSheet.Cells(f, 3).Value
+        report.Cells(g, 4) = ActiveSheet.Cells(f, 8).Value      'reference 8 refers to core skills
+        report.Cells(g, 5) = d
+        report.Range("d2") = sbj
+        report.Range("d2").Font.Bold = True
+        report.Range("a1") = dept
+        report.Range("a1").Font.Bold = True
+        g = g + 1
+        End If
+    End If
+Next f
+For i = 3 To 6000
+If report.Cells(i, 1) <> "" Then h = h + 1
+Next i
+j = (((k - h) / k) * 100)
+MsgBox dept & " " & sbj & " Compliance is " & j & "%", vbOKOnly, sbj
+pyn = MsgBox("Do you want a printout of training need?", vbYesNo + vbDefaultButton1, "Print?")
+If pyn = vbYes Then report.PrintOut
+Application.CommandBars("Compliance").Visible = True
+
+Application.ScreenUpdating = True
+End Sub
+
+Sub icpass()
+Application.ScreenUpdating = False
+
+report.Range("a3:f6000").Delete
+report.Range("d2").ClearContents
+report.Range("a1").ClearContents
+b = 3
+k = 0
+ki = 0
+For a = 4 To 6000                                           'count number of rows in use
+If ActiveSheet.Cells(a, 1) <> "" Then
+b = b + 1
+k = k + 1
+End If
+Next a
+ActiveSheet.Range(Cells(4, 1), Cells(b, 15)).Sort _
+key1:=Range("B3"), key2:=Range("A3")                        'sorts data a-z surname, firstname
+c = DateValue(Now)
+g = 3
+h = 0
+dept = ActiveSheet.Name
+sbj = ActiveSheet.Range("p3")                                   'p3 = Infection Control Passport
+For f = 4 To 6000
+    e = Cells(f, 16).Value
+    If Cells(f, 1) <> "" And Cells(f, 5) = "Yes" Then
+    ki = ki + 1
+    d = DateDiff("m", e, c)
+        If d > 12 Or d = 12 Then
+        report.Cells(g, 1) = ActiveSheet.Cells(f, 1).Value
+        report.Cells(g, 2) = ActiveSheet.Cells(f, 2).Value
+        report.Cells(g, 3) = ActiveSheet.Cells(f, 3).Value
+        report.Cells(g, 4) = ActiveSheet.Cells(f, 16).Value      'reference 16 refers to Infection
+        report.Cells(g, 5) = d                                   'Control passport
+        report.Range("d2") = sbj
+        report.Range("d2").Font.Bold = True
+        report.Range("a1") = dept
+        report.Range("a1").Font.Bold = True
+        g = g + 1
+        End If
+    End If
+Next f
+For i = 3 To 6000
+If report.Cells(i, 1) <> "" Then h = h + 1
+Next i
+j = (((ki - h) / ki) * 100)
+MsgBox dept & " " & sbj & " Compliance is " & j & "%", vbOKOnly, sbj
+pyn = MsgBox("Do you want a printout of training need?", vbYesNo + vbDefaultButton1, "Print?")
+If pyn = vbYes Then report.PrintOut
+Application.CommandBars("Compliance").Visible = True
+Application.ScreenUpdating = True
+End Sub
+
+----------------------------------------------------------------------------------------------------------------------
+
+'module2
+
+Sub toolbar()
+Dim mytoolbar As CommandBar                               'create custom toolbar
+Set mytoolbar = CommandBars.Add("Compliance")
+With mytoolbar
+    .Position = msoBarFloating
+    .Visible = True
+End With
+                                                         'add buttons & Macros
+Dim hs As CommandBarControl, fire As CommandBarControl
+Dim cust As CommandBarControl, infect As CommandBarControl
+Dim food As CommandBarControl, hsp As CommandBarControl, bfsp As CommandBarControl
+Dim te As CommandBarControl, snf As CommandBarControl, corsk As CommandBarControl
+Dim tna2 As CommandBarControl, icp As CommandBarControl, statshw As CommandBarControl
+
+Set te = mytoolbar.Controls.Add(Type:=msoControlButton)
+With te
+    .FaceId = 1849
+    .OnAction = "showform"
+    .TooltipText = "Search"
+End With
+
+Set snf = mytoolbar.Controls.Add(Type:=msoControlButton)
+With snf
+    .FaceId = 505
+    .OnAction = "shownewform"
+    .TooltipText = "New Entry"
+End With
+
+Set statshw = mytoolbar.Controls.Add(Type:=msoControlButton)
+With statshw
+    .FaceId = 3736
+    .OnAction = "showstatus"
+    .TooltipText = "Show Compliance Status Report"
+End With
+
+Set hs = mytoolbar.Controls.Add(Type:=msoControlButton)
+With hs
+    .FaceId = 463
+    .OnAction = "HealthSafety"
+    .TooltipText = "Health and Safety"
+End With
+
+Set fire = mytoolbar.Controls.Add(Type:=msoControlButton)
+With fire
+    .FaceId = 2151
+    .OnAction = "fire"
+    .TooltipText = "Fire"
+End With
+
+Set cust = mytoolbar.Controls.Add(Type:=msoControlButton)
+With cust
+    .FaceId = 3205
+    .OnAction = "CustomerService"
+    .TooltipText = "Customer Service"
+End With
+
+Set food = mytoolbar.Controls.Add(Type:=msoControlButton)
+With food
+    .FaceId = 3202
+    .OnAction = "FoodHygiene"
+    .TooltipText = "Food Safety"
+End With
+
+Set infect = mytoolbar.Controls.Add(Type:=msoControlButton)
+With infect
+    .FaceId = 579
+    .OnAction = "InfectionControl"
+    .TooltipText = "Infection Control"
+End With
+
+Set hsp = mytoolbar.Controls.Add(Type:=msoControlButton)
+With hsp
+    .FaceId = 565
+    .OnAction = "HSP"
+    .TooltipText = "Health and Safety Passport"
+End With
+
+Set bfsp = mytoolbar.Controls.Add(Type:=msoControlButton)
+With bfsp
+    .FaceId = 1672
+    .OnAction = "BFSP"
+    .TooltipText = "Food Safety Passport"
+End With
+
+Set icp = mytoolbar.Controls.Add(Type:=msoControlButton)
+With icp
+    .FaceId = 1996
+    .OnAction = "icpass"
+    .TooltipText = "Infection Control Passport"
+End With
+
+Set corsk = mytoolbar.Controls.Add(Type:=msoControlButton)
+With corsk
+    .FaceId = 221
+    .OnAction = "coreskills"
+    .TooltipText = "Core Skills"
+End With
+
+Set tna2 = mytoolbar.Controls.Add(Type:=msoControlButton)
+With tna2
+    .FaceId = 562
+    .OnAction = "tna"
+    .TooltipText = "Full TNA Prints"
+End With
+
+
+End Sub
+
+Sub toolbarclose()
+
+Application.CommandBars("Compliance").Delete
+
+End Sub
+
+---------------------------------------------------------------------------------------------------------------
+
+'module3
+
+Sub removetoolbar()
+'
+' removetoolbar Macro
+'
+
+'
+    Application.Run "'Training Status.xls'!toolbarclose"
+End Sub
+
+------------------------------------------------------------------------------------------------------------------------
+
+'module4
+
+
+
+Public Sub HideSummary()
+Sheet1.Visible = xlSheetHidden
+End Sub
+
+Public Sub ShowSummary()
+Sheet1.Visible = xlSheetVisible
+Sheet1.Activate
+End Sub
+
+Public Sub hidestatus()
+status.Visible = xlSheetHidden
+Sheet1.Activate
+End Sub
+Public Sub showstatus()
+status.Visible = xlSheetVisible
+status.Activate
+End Sub
+
+-----------------------------------------------------------------------------------------------------------------
+
+'module5
+
+
+Sub showform()
+dataform.Show
+End Sub
+
+Sub shownewform()
+newentry.Show
+End Sub
+
+Sub splashclose()
+Unload splash
+End Sub
+
+
+Sub reportcopy()
+Dim a As Integer
+Dim b As Integer
+
+
+Application.ScreenUpdating = False
+
+For a = 3 To 1000
+If Cells(a, 1) <> "" Then b = b + 1
+Next a
+
+Range(Cells(1, 1), Cells(b, 5)).Select
+
+Application.ScreenUpdating = True
+
+
+ActiveWindow.Selection.PrintOut copies:=1, ActivePrinter:="PrimoPDF", collate:=True
+
+Cells(1, 1).Select
+
+End Sub
+
+------------------------------------------------------------------------------------------------------------------
+
+'module6
+Dim a As Integer
+Dim s1sof As Integer, s2sof As Integer, s3sof As Integer, s4sof As Integer, s5sof As Integer
+Dim s6sof As Integer, s7sof As Integer, s8sof As Integer, s9sof As Integer, s10sof As Integer
+Dim s1fh As Integer, s2fh As Integer, s3fh As Integer, s4fh As Integer, s5fh As Integer
+Dim s6fh As Integer, s7fh As Integer, s8fh As Integer, s9fh As Integer, s10fh As Integer
+Dim s1ic As Integer, s2ic As Integer, s3ic As Integer, s4ic As Integer, s5ic As Integer
+Dim s6ic As Integer, s7ic As Integer, s8ic As Integer, s9ic As Integer, s10ic As Integer
+Dim ta As Integer, tf As Integer, ti As Integer
+Dim has As Integer, fs As Integer, ic As Integer, cs As Integer, hasp As Integer, fsp As Integer, icp As Integer, ov As Integer
+Dim g As Integer, h As Integer, i As Integer, j As Integer, k As Integer, l As Integer, m As Integer, n As Integer
+
+Sub staffnumbers()
+s1sof = 0
+s2sof = 0
+s3sof = 0
+s4sof = 0
+s5sof = 0
+s6sof = 0
+s7sof = 0
+s8sof = 0
+s9sof = 0
+s10sof = 0
+s1fh = 0
+s2fh = 0
+s3fh = 0
+s4fh = 0
+s5fh = 0
+s6fh = 0
+s7fh = 0
+s8fh = 0
+s9fh = 0
+s10fh = 0
+s1ic = 0
+s2ic = 0
+s3ic = 0
+s4ic = 0
+s5ic = 0
+s6ic = 0
+s7ic = 0
+s8ic = 0
+s9ic = 0
+s10ic = 0
+
+Application.ScreenUpdating = False
+
+For a = 4 To 6000
+
+If Sheet1.Cells(a, 1) <> "" Then s1sof = s1sof + 1
+If Sheet1.Cells(a, 1) <> "" And Sheet1.Cells(a, 4) = "Yes" Then s1fh = s1fh + 1
+If Sheet1.Cells(a, 1) <> "" And Sheet1.Cells(a, 5) = "Yes" Then s1ic = s1ic + 1
+
+If Sheet2.Cells(a, 1) <> "" Then s2sof = s2sof + 1
+If Sheet2.Cells(a, 1) <> "" And Sheet2.Cells(a, 4) = "Yes" Then s2fh = s2fh + 1
+If Sheet2.Cells(a, 1) <> "" And Sheet2.Cells(a, 5) = "Yes" Then s2ic = s2ic + 1
+
+If Sheet3.Cells(a, 1) <> "" Then s3sof = s3sof + 1
+If Sheet3.Cells(a, 1) <> "" And Sheet3.Cells(a, 4) = "Yes" Then s3fh = s3fh + 1
+If Sheet3.Cells(a, 1) <> "" And Sheet3.Cells(a, 5) = "Yes" Then s3ic = s3ic + 1
+
+If Sheet4.Cells(a, 1) <> "" Then s4sof = s4sof + 1
+If Sheet4.Cells(a, 1) <> "" And Sheet4.Cells(a, 4) = "Yes" Then s4fh = s4fh + 1
+If Sheet4.Cells(a, 1) <> "" And Sheet4.Cells(a, 5) = "Yes" Then s4ic = s4ic + 1
+
+If Sheet5.Cells(a, 1) <> "" Then s5sof = s5sof + 1
+If Sheet5.Cells(a, 1) <> "" And Sheet5.Cells(a, 4) = "Yes" Then s5fh = s5fh + 1
+If Sheet5.Cells(a, 1) <> "" And Sheet5.Cells(a, 5) = "Yes" Then s5ic = s5ic + 1
+
+If Sheet6.Cells(a, 1) <> "" Then s6sof = s6sof + 1
+If Sheet6.Cells(a, 1) <> "" And Sheet6.Cells(a, 4) = "Yes" Then s6fh = s6fh + 1
+If Sheet6.Cells(a, 1) <> "" And Sheet6.Cells(a, 5) = "Yes" Then s6ic = s6ic + 1
+
+If Sheet7.Cells(a, 1) <> "" Then s7sof = s7sof + 1
+If Sheet7.Cells(a, 1) <> "" And Sheet7.Cells(a, 4) = "Yes" Then s7fh = s7fh + 1
+If Sheet7.Cells(a, 1) <> "" And Sheet7.Cells(a, 5) = "Yes" Then s7ic = s7ic + 1
+
+If Sheet8.Cells(a, 1) <> "" Then s8sof = s8sof + 1
+If Sheet8.Cells(a, 1) <> "" And Sheet8.Cells(a, 4) = "Yes" Then s8fh = s8fh + 1
+If Sheet8.Cells(a, 1) <> "" And Sheet8.Cells(a, 5) = "Yes" Then s8ic = s8ic + 1
+
+If Sheet9.Cells(a, 1) <> "" Then s9sof = s9sof + 1
+If Sheet9.Cells(a, 1) <> "" And Sheet9.Cells(a, 4) = "Yes" Then s9fh = s9fh + 1
+If Sheet9.Cells(a, 1) <> "" And Sheet9.Cells(a, 5) = "Yes" Then s9ic = s9ic + 1
+
+If Sheet10.Cells(a, 1) <> "" Then s10sof = s10sof + 1
+If Sheet10.Cells(a, 1) <> "" And Sheet10.Cells(a, 4) = "Yes" Then s10fh = s10fh + 1
+If Sheet10.Cells(a, 1) <> "" And Sheet10.Cells(a, 5) = "Yes" Then s10ic = s10ic + 1
+
+Application.ScreenUpdating = False
+
+Next a
+
+status.Range("A6").Value = Sheet1.Name
+status.Range("c6").Value = s1sof
+    If s1sof = 0 Then
+    status.Range("c6", "c9").Select
+    Selection.EntireRow.Hidden = True
+    Else
+    status.Range("c6", "c8").Select
+    Selection.EntireRow.Hidden = False
+    End If
+status.Range("c7").Value = s1fh
+    If s1fh = 0 Then
+    status.Range("f6").Value = ""
+    status.Range("g6").Value = "0"
+    status.Range("n6").Value = ""
+    status.Range("o6").Value = "0"
+    End If
+status.Range("c8").Value = s1ic
+    If s1ic = 0 Then
+    status.Range("h6").Value = ""
+    status.Range("i6").Value = "0"
+    status.Range("p6").Value = ""
+    status.Range("q6").Value = "0"
+    End If
+
+status.Range("A9").Value = Sheet2.Name
+status.Range("c9").Value = s2sof
+    If s2sof = 0 Then
+    status.Range("c9", "c11").Select
+    Selection.EntireRow.Hidden = True
+    Else
+    status.Range("c9", "c11").Select
+    Selection.EntireRow.Hidden = False
+    End If
+status.Range("c10").Value = s2fh
+    If s2fh = 0 Then
+    status.Range("f9").Value = ""
+    status.Range("g9").Value = "0"
+    status.Range("n9").Value = ""
+    status.Range("o9").Value = "0"
+    End If
+status.Range("c11").Value = s2ic
+    If s2ic = 0 Then
+    status.Range("h9").Value = ""
+    status.Range("i9").Value = "0"
+    status.Range("p9").Value = ""
+    status.Range("q9").Value = "0"
+    End If
+
+status.Range("c12").Value = Sheet3.Name
+status.Range("c12").Value = s3sof
+    If s3sof = 0 Then
+    status.Range("c12", "c14").Select
+    Selection.EntireRow.Hidden = True
+    Else
+    status.Range("c12", "c14").Select
+    Selection.EntireRow.Hidden = False
+    End If
+status.Range("c13").Value = s3fh
+    If s3fh = 0 Then
+    status.Range("f12").Value = ""
+    status.Range("g12").Value = "0"
+    status.Range("n12").Value = ""
+    status.Range("o12").Value = "0"
+    End If
+status.Range("c14").Value = s3ic
+    If s3ic = 0 Then
+    status.Range("h12").Value = ""
+    status.Range("i12").Value = "0"
+    status.Range("p12").Value = ""
+    status.Range("q12").Value = "0"
+    End If
+
+status.Range("A15").Value = Sheet4.Name
+status.Range("c15").Value = s4sof
+    If s4sof = 0 Then
+    status.Range("c15", "c17").Select
+    Selection.EntireRow.Hidden = True
+    Else
+    status.Range("c15", "c17").Select
+    Selection.EntireRow.Hidden = False
+    End If
+status.Range("c16").Value = s4fh
+    If s4fh = 0 Then
+    status.Range("f15").Value = ""
+    status.Range("g15").Value = "0"
+    status.Range("n15").Value = ""
+    status.Range("o15").Value = "0"
+    End If
+status.Range("c17").Value = s4ic
+    If s4ic = 0 Then
+    status.Range("h15").Value = ""
+    status.Range("i15").Value = "0"
+    status.Range("p15").Value = ""
+    status.Range("q15").Value = "0"
+    End If
+
+status.Range("A18").Value = Sheet5.Name
+status.Range("c18").Value = s5sof
+    If s5sof = 0 Then
+    status.Range("c18", "c20").Select
+    Selection.EntireRow.Hidden = True
+    Else
+    status.Range("c18", "c20").Select
+    Selection.EntireRow.Hidden = False
+    End If
+status.Range("c19").Value = s5fh
+    If s5fh = 0 Then
+    status.Range("f18").Value = ""
+    status.Range("g18").Value = "0"
+    status.Range("n18").Value = ""
+    status.Range("o18").Value = "0"
+    End If
+status.Range("c20").Value = s5ic
+    If s5ic = 0 Then
+    status.Range("h18").Value = ""
+    status.Range("i18").Value = "0"
+    status.Range("p18").Value = ""
+    status.Range("q18").Value = "0"
+    End If
+
+status.Range("A21").Value = Sheet6.Name
+status.Range("c21").Value = s6sof
+    If s6sof = 0 Then
+    status.Range("c21", "c23").Select
+    Selection.EntireRow.Hidden = True
+    Else
+    status.Range("c21", "c23").Select
+    Selection.EntireRow.Hidden = False
+    End If
+status.Range("c22").Value = s6fh
+    If s6fh = 0 Then
+    status.Range("f21").Value = ""
+    status.Range("g21").Value = "0"
+    status.Range("n21").Value = ""
+    status.Range("o21").Value = "0"
+    End If
+status.Range("c23").Value = s6ic
+    If s6ic = 0 Then
+    status.Range("h21").Value = ""
+    status.Range("i21").Value = "0"
+    status.Range("p21").Value = ""
+    status.Range("q21").Value = "0"
+    End If
+
+status.Range("A24").Value = Sheet7.Name
+status.Range("c24").Value = s7sof
+    If s7sof = 0 Then
+    status.Range("c24", "c26").Select
+    Selection.EntireRow.Hidden = True
+    Else
+    status.Range("c24", "c26").Select
+    Selection.EntireRow.Hidden = False
+    End If
+status.Range("c25").Value = s7fh
+    If s7fh = 0 Then
+    status.Range("f24").Value = ""
+    status.Range("g24").Value = "0"
+    status.Range("n24").Value = ""
+    status.Range("o24").Value = "0"
+    End If
+status.Range("c26").Value = s7ic
+    If s7ic = 0 Then
+    status.Range("h24").Value = ""
+    status.Range("i24").Value = "0"
+    status.Range("p24").Value = ""
+    status.Range("q24").Value = "0"
+    End If
+    
+status.Range("A27").Value = Sheet8.Name
+status.Range("c27").Value = s8sof
+    If s8sof = 0 Then
+    status.Range("c27", "c29").Select
+    Selection.EntireRow.Hidden = True
+    Else
+    status.Range("c27", "c29").Select
+    Selection.EntireRow.Hidden = False
+    End If
+status.Range("c28").Value = s8fh
+    If s8fh = 0 Then
+    status.Range("f27").Value = ""
+    status.Range("g27").Value = "0"
+    status.Range("n27").Value = ""
+    status.Range("o27").Value = "0"
+    End If
+status.Range("c29").Value = s8ic
+    If s8ic = 0 Then
+    status.Range("h27").Value = ""
+    status.Range("i27").Value = "0"
+    status.Range("p27").Value = ""
+    status.Range("q27").Value = "0"
+    End If
+    
+status.Range("A30").Value = Sheet9.Name
+status.Range("c30").Value = s9sof
+    If s9sof = 0 Then
+    status.Range("c30", "c32").Select
+    Selection.EntireRow.Hidden = True
+    Else
+    status.Range("c30", "c32").Select
+    Selection.EntireRow.Hidden = False
+    End If
+status.Range("c31").Value = s9fh
+    If s9fh = 0 Then
+    status.Range("f30").Value = ""
+    status.Range("g30").Value = "0"
+    status.Range("n30").Value = ""
+    status.Range("o30").Value = "0"
+    End If
+status.Range("c32").Value = s9ic
+    If s9ic = 0 Then
+    status.Range("h30").Value = ""
+    status.Range("i30").Value = "0"
+    status.Range("p30").Value = ""
+    status.Range("q30").Value = "0"
+    End If
+    
+status.Range("A33").Value = Sheet10.Name
+status.Range("c33").Value = s10sof
+    If s10sof = 0 Then
+    status.Range("c33", "c35").Select
+    Selection.EntireRow.Hidden = True
+    Else
+    status.Range("c33", "c35").Select
+    Selection.EntireRow.Hidden = False
+    End If
+status.Range("c34").Value = s10fh
+    If s10fh = 0 Then
+    status.Range("f33").Value = ""
+    status.Range("g33").Value = "0"
+    status.Range("n33").Value = ""
+    status.Range("o33").Value = "0"
+    End If
+status.Range("c35").Value = s10ic
+    If s10ic = 0 Then
+    status.Range("h33").Value = ""
+    status.Range("i33").Value = "0"
+    status.Range("p33").Value = ""
+    status.Range("q33").Value = "0"
+    End If
+    
+ta = s1sof + s2sof + s3sof + s4sof + s5sof + s6sof + s7sof + s8sof + s9sof + s10sof
+tf = s1fh + s2fh + s3fh + s4fh + s5fh + s6fh + s7fh + s8fh + s9fh + s10fh
+ti = s1ic + s2ic + s3ic + s4ic + s5ic + s6ic + s7ic + s8ic + s9ic + s10ic
+
+status.Range("A36").Value = "Total"
+status.Range("c36").Value = ta
+status.Range("c37").Value = tf
+status.Range("c38").Value = ti
+
+Application.ScreenUpdating = True
+
+End Sub
+
+Sub sitetotals()
+has = Application.WorksheetFunction.Sum(status.Range("e6", "e35"))
+fs = Application.WorksheetFunction.Sum(status.Range("g6", "g35"))
+ic = Application.WorksheetFunction.Sum(status.Range("i6", "i35"))
+cs = Application.WorksheetFunction.Sum(status.Range("k6", "k35"))
+hasp = Application.WorksheetFunction.Sum(status.Range("m6", "m35"))
+fsp = Application.WorksheetFunction.Sum(status.Range("o6", "o35"))
+icp = Application.WorksheetFunction.Sum(status.Range("q6", "q35"))
+
+Application.ScreenUpdating = False
+
+status.Range("e36").Value = has
+status.Range("d36").Value = ((ta - has) / ta)
+status.Range("d36") = FormatPercent(status.Range("d36"), 1)
+
+status.Range("g36").Value = fs
+status.Range("f36").Value = ((tf - fs) / tf)
+status.Range("f36") = FormatPercent(status.Range("f36"), 1)
+
+status.Range("i36").Value = ic
+status.Range("h36").Value = ((ti - ic) / ti)
+status.Range("h36") = FormatPercent(status.Range("h36"), 1)
+
+status.Range("k36").Value = cs
+status.Range("j36").Value = ((ta - cs) / ta)
+status.Range("j36") = FormatPercent(status.Range("j36"), 1)
+
+status.Range("m36").Value = hasp
+status.Range("l36").Value = ((ta - hasp) / ta)
+status.Range("l36") = FormatPercent(status.Range("l36"), 1)
+
+status.Range("o36").Value = fsp
+status.Range("n36").Value = ((tf - fsp) / tf)
+status.Range("n36") = FormatPercent(status.Range("n36"), 1)
+
+status.Range("q36").Value = icp
+status.Range("p36").Value = ((ti - icp) / ti)
+status.Range("p36") = FormatPercent(status.Range("p36"), 1)
+
+n = (has + fs + ic + cs + hasp + fsp + icp)
+ov = ((3 * ta) + (2 * tf) + (2 * ti))
+
+status.Range("r36").Value = ((ov - n) / ov)
+status.Range("r36") = FormatPercent(status.Range("r36"), 1)
+
+Application.ScreenUpdating = True
+
+End Sub
+
+
+-------------------------------------------------------------------------------------------------
+
+'module7
+
+Sub statuscopy()
+'
+' statuscopy Macro
+' Macro recorded 22/12/2009 by Jon Moon
+'
+' Keyboard Shortcut: Ctrl+Shift+S
+'
+    Range("A1:L41").Select
+    
+    Selection.PrintOut copies:=1, ActivePrinter:="PrimoPDF", collate:=True
+End Sub
+
+---------------------------------------------------------------------------------------------------------
+
+'module8
+
+Dim a As Integer, b As Integer, c As Date, d As Integer, e As Date
+Dim f As Integer, g As Integer, h As Integer, i As Integer, j As Integer
+Dim pyn As Integer, k As Integer
+Dim dept As String, sbj As String
+Sub tna()
+Application.ScreenUpdating = False
+
+report.Range("a3:f6000").Delete
+report.Range("d2").ClearContents
+report.Range("a1").ClearContents
+b = 3
+k = 0
+For a = 4 To 6000                                           'count number of rows in use
+If ActiveSheet.Cells(a, 1) <> "" Then
+b = b + 1
+k = k + 1
+End If
+Next a
+ActiveSheet.Range(Cells(4, 1), Cells(b, 15)).Sort _
+key1:=Range("B3"), key2:=Range("A3")                        'sorts data a-z surname, firstname
+c = DateValue(Now)
+g = 3
+h = 0
+dept = ActiveSheet.Name
+sbj = ActiveSheet.Range("i3")                                   'i3 = H&S
+For f = 4 To 6000
+    e = Cells(f, 9).Value
+    If Cells(f, 1) <> "" Then
+    d = DateDiff("m", e, c)
+        If d > 9 Or d = 9 Then
+        report.Cells(g, 1) = ActiveSheet.Cells(f, 1).Value
+        report.Cells(g, 2) = ActiveSheet.Cells(f, 2).Value
+        report.Cells(g, 3) = ActiveSheet.Cells(f, 3).Value
+        report.Cells(g, 4) = ActiveSheet.Cells(f, 9).Value      'reference 9 refers to H&S
+        report.Cells(g, 5) = d
+        report.Range("d2") = sbj
+        report.Range("d2").Font.Bold = True
+        report.Range("a1") = dept
+        report.Range("a1").Font.Bold = True
+        g = g + 1
+        End If
+    End If
+Next f
+For i = 3 To 6000
+If report.Cells(i, 1) <> "" Then h = h + 1
+Next i
+j = (((k - h) / k) * 100)
+
+If report.Cells(3, 1) <> "" Then report.PrintOut
+
+report.Range("a3:f6000").Delete
+report.Range("d2").ClearContents
+report.Range("a1").ClearContents
+b = 3
+k = 0
+For a = 4 To 6000                                           'count number of rows in use
+If ActiveSheet.Cells(a, 1) <> "" Then
+b = b + 1
+k = k + 1
+End If
+Next a
+ActiveSheet.Range(Cells(4, 1), Cells(b, 15)).Sort _
+key1:=Range("B3"), key2:=Range("A3")                        'sorts data a-z surname, firstname
+c = DateValue(Now)
+g = 3
+h = 0
+dept = ActiveSheet.Name
+sbj = ActiveSheet.Range("l3")                                   'l2 = food hygiene
+For f = 4 To 6000
+    e = Cells(f, 12).Value
+    If Cells(f, 1) <> "" And Cells(f, 4) = "Yes" Then           'checks role for relevance to
+    d = DateDiff("m", e, c)                                     'Food Hygiene
+        If d > 9 Or d = 9 Then
+        report.Cells(g, 1) = ActiveSheet.Cells(f, 1).Value
+        report.Cells(g, 2) = ActiveSheet.Cells(f, 2).Value
+        report.Cells(g, 3) = ActiveSheet.Cells(f, 3).Value
+        report.Cells(g, 4) = ActiveSheet.Cells(f, 12).Value      'reference 10 refers to food
+        report.Cells(g, 5) = d                                   'hygiene
+        report.Range("d2") = sbj
+        report.Range("d2").Font.Bold = True
+        report.Range("a1") = dept
+        report.Range("a1").Font.Bold = True
+        g = g + 1
+        End If
+    End If
+Next f
+For i = 3 To 6000
+If report.Cells(i, 1) <> "" Then h = h + 1
+Next i
+j = (((k - h) / k) * 100)
+If report.Cells(3, 1) <> "" Then report.PrintOut
+
+report.Range("a3:f6000").Delete
+report.Range("d2").ClearContents
+report.Range("a1").ClearContents
+b = 3
+k = 0
+For a = 4 To 6000                                           'count number of rows in use
+If ActiveSheet.Cells(a, 1) <> "" Then
+b = b + 1
+k = k + 1
+End If
+Next a
+ActiveSheet.Range(Cells(4, 1), Cells(b, 15)).Sort _
+key1:=Range("B3"), key2:=Range("A3")                        'sorts data a-z surname, firstname
+c = DateValue(Now)
+g = 3
+h = 0
+dept = ActiveSheet.Name
+sbj = ActiveSheet.Range("m3")                                   'm3 = Infection Control
+For f = 4 To 6000
+    e = Cells(f, 13).Value
+    If Cells(f, 1) <> "" And Cells(f, 5) = "Yes" Then
+    d = DateDiff("m", e, c)
+        If d > 9 Or d = 9 Then
+        report.Cells(g, 1) = ActiveSheet.Cells(f, 1).Value
+        report.Cells(g, 2) = ActiveSheet.Cells(f, 2).Value
+        report.Cells(g, 3) = ActiveSheet.Cells(f, 3).Value
+        report.Cells(g, 4) = ActiveSheet.Cells(f, 13).Value      'reference 13 refers to Infection
+        report.Cells(g, 5) = d                                   'Control
+        report.Range("d2") = sbj
+        report.Range("d2").Font.Bold = True
+        report.Range("a1") = dept
+        report.Range("a1").Font.Bold = True
+        g = g + 1
+        End If
+    End If
+Next f
+For i = 3 To 6000
+If report.Cells(i, 1) <> "" Then h = h + 1
+Next i
+j = (((k - h) / k) * 100)
+If report.Cells(3, 1) <> "" Then report.PrintOut
+
+report.Range("a3:f6000").Delete
+report.Range("d2").ClearContents
+report.Range("a1").ClearContents
+b = 3
+k = 0
+For a = 4 To 6000                                           'count number of rows in use
+If ActiveSheet.Cells(a, 1) <> "" Then
+b = b + 1
+k = k + 1
+End If
+Next a
+ActiveSheet.Range(Cells(4, 1), Cells(b, 15)).Sort _
+key1:=Range("B3"), key2:=Range("A3")                        'sorts data a-z surname, firstname
+c = DateValue(Now)
+g = 3
+h = 0
+dept = ActiveSheet.Name
+sbj = ActiveSheet.Range("o3")                                   'o3 = bfs passport
+For f = 4 To 6000
+    e = Cells(f, 15).Value
+    If Cells(f, 1) <> "" And Cells(f, 4) = "Yes" Then           'checks role for relevance to
+    d = DateDiff("m", e, c)                                     'Food Hygiene
+        If d > 9 Or d = 9 Then
+        report.Cells(g, 1) = ActiveSheet.Cells(f, 1).Value
+        report.Cells(g, 2) = ActiveSheet.Cells(f, 2).Value
+        report.Cells(g, 3) = ActiveSheet.Cells(f, 3).Value
+        report.Cells(g, 4) = ActiveSheet.Cells(f, 15).Value      'reference 15 refers to food
+        report.Cells(g, 5) = d                                   'hygiene passport
+        report.Range("d2") = sbj
+        report.Range("d2").Font.Bold = True
+        report.Range("a1") = dept
+        report.Range("a1").Font.Bold = True
+        g = g + 1
+        End If
+    End If
+Next f
+For i = 3 To 6000
+If report.Cells(i, 1) <> "" Then h = h + 1
+Next i
+j = (((k - h) / k) * 100)
+If report.Cells(3, 1) <> "" Then report.PrintOut
+
+report.Range("a3:f6000").Delete
+report.Range("d2").ClearContents
+report.Range("a1").ClearContents
+b = 3
+k = 0
+For a = 4 To 6000                                           'count number of rows in use
+If ActiveSheet.Cells(a, 1) <> "" Then
+b = b + 1
+k = k + 1
+End If
+Next a
+ActiveSheet.Range(Cells(4, 1), Cells(b, 15)).Sort _
+key1:=Range("B3"), key2:=Range("A3")                        'sorts data a-z surname, firstname
+c = DateValue(Now)
+g = 3
+h = 0
+dept = ActiveSheet.Name
+sbj = ActiveSheet.Range("h3")                                   'h3 = core skills
+For f = 4 To 6000
+    e = Cells(f, 8).Value
+    If Cells(f, 1) <> "" Then
+    d = DateDiff("m", e, c)
+        If d > 9 Or d = 9 Then
+        report.Cells(g, 1) = ActiveSheet.Cells(f, 1).Value
+        report.Cells(g, 2) = ActiveSheet.Cells(f, 2).Value
+        report.Cells(g, 3) = ActiveSheet.Cells(f, 3).Value
+        report.Cells(g, 4) = ActiveSheet.Cells(f, 8).Value      'reference 8 refers to core skills
+        report.Cells(g, 5) = d
+        report.Range("d2") = sbj
+        report.Range("d2").Font.Bold = True
+        report.Range("a1") = dept
+        report.Range("a1").Font.Bold = True
+        g = g + 1
+        End If
+    End If
+Next f
+For i = 3 To 6000
+If report.Cells(i, 1) <> "" Then h = h + 1
+Next i
+j = (((k - h) / k) * 100)
+If report.Cells(3, 1) <> "" Then report.PrintOut
+
+report.Range("a3:f6000").Delete
+report.Range("d2").ClearContents
+report.Range("a1").ClearContents
+b = 3
+k = 0
+For a = 4 To 6000                                           'count number of rows in use
+If ActiveSheet.Cells(a, 1) <> "" Then
+b = b + 1
+k = k + 1
+End If
+Next a
+ActiveSheet.Range(Cells(4, 1), Cells(b, 15)).Sort _
+key1:=Range("B3"), key2:=Range("A3")                        'sorts data a-z surname, firstname
+c = DateValue(Now)
+g = 3
+h = 0
+dept = ActiveSheet.Name
+sbj = ActiveSheet.Range("n3")                                   'n3 = H&S passport
+For f = 4 To 6000
+    e = Cells(f, 14).Value
+    If Cells(f, 1) <> "" Then
+    d = DateDiff("m", e, c)
+        If d > 9 Or d = 9 Then
+        report.Cells(g, 1) = ActiveSheet.Cells(f, 1).Value
+        report.Cells(g, 2) = ActiveSheet.Cells(f, 2).Value
+        report.Cells(g, 3) = ActiveSheet.Cells(f, 3).Value
+        report.Cells(g, 4) = ActiveSheet.Cells(f, 14).Value      'reference 14 refers to H&S passport
+        report.Cells(g, 5) = d
+        report.Range("d2") = sbj
+        report.Range("d2").Font.Bold = True
+        report.Range("a1") = dept
+        report.Range("a1").Font.Bold = True
+        g = g + 1
+        End If
+    End If
+Next f
+For i = 3 To 6000
+If report.Cells(i, 1) <> "" Then h = h + 1
+Next i
+j = (((k - h) / k) * 100)
+If report.Cells(3, 1) <> "" Then report.PrintOut
+
+report.Range("a3:f6000").Delete
+report.Range("d2").ClearContents
+report.Range("a1").ClearContents
+b = 3
+k = 0
+For a = 4 To 6000                                           'count number of rows in use
+If ActiveSheet.Cells(a, 1) <> "" Then
+b = b + 1
+k = k + 1
+End If
+Next a
+ActiveSheet.Range(Cells(4, 1), Cells(b, 15)).Sort _
+key1:=Range("B3"), key2:=Range("A3")                        'sorts data a-z surname, firstname
+c = DateValue(Now)
+g = 3
+h = 0
+dept = ActiveSheet.Name
+sbj = ActiveSheet.Range("p3")                                   'p3 = Infection Control passport
+For f = 4 To 6000
+    e = Cells(f, 16).Value
+    If Cells(f, 1) <> "" And Cells(f, 5) = "Yes" Then
+    d = DateDiff("m", e, c)
+        If d > 9 Or d = 9 Then
+        report.Cells(g, 1) = ActiveSheet.Cells(f, 1).Value
+        report.Cells(g, 2) = ActiveSheet.Cells(f, 2).Value
+        report.Cells(g, 3) = ActiveSheet.Cells(f, 3).Value
+        report.Cells(g, 4) = ActiveSheet.Cells(f, 16).Value      'reference 16 refers to Infection
+        report.Cells(g, 5) = d                                   'Control passport
+        report.Range("d2") = sbj
+        report.Range("d2").Font.Bold = True
+        report.Range("a1") = dept
+        report.Range("a1").Font.Bold = True
+        g = g + 1
+        End If
+    End If
+Next f
+For i = 3 To 6000
+If report.Cells(i, 1) <> "" Then h = h + 1
+Next i
+j = (((k - h) / k) * 100)
+If report.Cells(3, 1) <> "" Then report.PrintOut
+
+Application.CommandBars("Compliance").Visible = True
+Application.ScreenUpdating = True
+End Sub
+
+Sub foodh()
+Dim g As Integer
+Application.ScreenUpdating = False
+For g = 4 To 1000
+If Cells(g, 1) <> "" And Cells(g, 3) = "PSA" _
+Or Cells(g, 1) <> "" And Cells(g, 3) = "TL" _
+Or Cells(g, 1) <> "" And Cells(g, 3) = "KP" _
+Or Cells(g, 1) <> "" And Cells(g, 3) = "Monitor" _
+Or Cells(g, 1) <> "" And Cells(g, 3) = "Mon. TL" _
+Or Cells(g, 1) <> "" And Cells(g, 3) = "Stores" Then
+Cells(g, 4).Value = "Yes"
+Else
+If Cells(g, 1) <> "" Then Cells(g, 4).Value = "No"
+End If
+Next g
+Application.ScreenUpdating = True
+End Sub
+
+Sub ipac()
+Dim h As Integer
+Application.ScreenUpdating = False
+For h = 4 To 1000
+If Cells(h, 1) <> "" Then Cells(h, 5).Value = "Yes"
+Next h
+Application.ScreenUpdating = True
+End Sub
+
+--------------------------------------------------------------------------------------------------------------------
+
+'module9
+
+Dim has As Integer, fs As Integer, ic As Integer, cs As Integer, hasp As Integer, fsp As Integer, icp As Integer
+Dim x As Date, z As Integer, zf As Integer, zi As Integer, f As Integer, t As Integer, p As Integer
+Dim g As Date, h As Date, i As Date, j As Date, k As Date, l As Date, m As Date, n As Integer
+Dim yg As Integer, yh As Integer, yi As Integer, yj As Integer, yk As Integer, yl As Integer, ym As Integer, yn As Integer
+
+Sub sheetone()
+has = 0
+fs = 0
+ic = 0
+cs = 0
+hasp = 0
+fsp = 0
+icp = 0
+t = 12
+p = 24
+x = DateValue(Now)
+z = status.Range("c6").Value
+zf = status.Range("c7").Value
+zi = status.Range("c8").Value
+
+
+For f = 4 To 6000
+
+Application.ScreenUpdating = False
+
+    If Sheet1.Cells(f, 1) <> "" Then
+        g = Sheet1.Cells(f, 9).Value                                'Health and safety
+        yg = DateDiff("m", g, x)
+        If yg > t Or yg = t Then has = has + 1
+            If Sheet1.Cells(f, 4) = "Yes" Then                      'Food Safety
+            h = Sheet1.Cells(f, 12).Value
+            yh = DateDiff("m", h, x)
+            If yh > t Or yh = t Then fs = fs + 1
+            l = Sheet1.Cells(f, 15).Value                           'Food Safety Passport
+            yl = DateDiff("m", l, x)
+            If yl > p Or yl = p Then fsp = fsp + 1
+            End If
+        If Sheet1.Cells(f, 5) = "Yes" Then                          'Infection Control
+        i = Sheet1.Cells(f, 13).Value
+        yi = DateDiff("m", i, x)
+        If yi > t Or yi = t Then ic = ic + 1
+        m = Sheet1.Cells(f, 16).Value                               'Infection Control Passport
+        ym = DateDiff("m", m, x)
+        If ym > p Or ym = p Then icp = icp + 1
+        End If
+            j = Sheet1.Cells(f, 8).Value                            'Core Skills
+            yj = DateDiff("m", j, x)
+            If yj > t Or yj = t Then cs = cs + 1
+        k = Sheet1.Cells(f, 14).Value
+        yk = DateDiff("m", k, x)
+        If yk > p Or yk = p Then hasp = hasp + 1
+    End If
+Next f
+
+On Error Resume Next
+
+status.Range("e6").Value = has
+status.Range("d6").Value = ((z - has) / z)
+status.Range("d6") = FormatPercent(status.Range("d6"), 1)
+
+status.Range("g6").Value = fs
+status.Range("f6").Value = ((zf - fs) / zf)
+status.Range("f6") = FormatPercent(status.Range("f6"), 1)
+
+status.Range("i6").Value = ic
+status.Range("h6").Value = ((zi - ic) / zi)
+status.Range("h6") = FormatPercent(status.Range("h6"), 1)
+
+status.Range("k6").Value = cs
+status.Range("j6").Value = ((z - cs) / z)
+status.Range("j6") = FormatPercent(status.Range("j6"), 1)
+
+status.Range("m6").Value = hasp
+status.Range("l6").Value = ((z - hasp) / z)
+status.Range("l6") = FormatPercent(status.Range("l6"), 1)
+
+status.Range("o6").Value = fsp
+status.Range("n6").Value = ((zf - fsp) / zf)
+status.Range("n6") = FormatPercent(status.Range("n6"), 1)
+
+status.Range("q6").Value = icp
+status.Range("p6").Value = ((zi - icp) / zi)
+status.Range("p6") = FormatPercent(status.Range("p6"), 1)
+
+n = (has + fs + ic + cs + hasp + fsp + icp)
+yn = ((3 * z) + (2 * zf) + (2 * zi))
+
+status.Range("r6").Value = ((yn - n) / yn)
+status.Range("r6") = FormatPercent(status.Range("r6"), 1)
+
+Application.ScreenUpdating = True
+
+End Sub
+Sub sheettwo()
+has = 0
+fs = 0
+ic = 0
+cs = 0
+hasp = 0
+fsp = 0
+icp = 0
+t = 12
+p = 24
+x = DateValue(Now)
+z = status.Range("c9").Value
+zf = status.Range("c10").Value
+zi = status.Range("c11").Value
+
+For f = 4 To 6000
+    
+Application.ScreenUpdating = False
+
+    If Sheet2.Cells(f, 1) <> "" Then
+        g = Sheet2.Cells(f, 9).Value                                'Health and safety
+        yg = DateDiff("m", g, x)
+        If yg > t Or yg = t Then has = has + 1
+            If Sheet2.Cells(f, 4) = "Yes" Then                      'Food Safety
+            h = Sheet2.Cells(f, 12).Value
+            yh = DateDiff("m", h, x)
+            If yh > t Or yh = t Then fs = fs + 1
+            l = Sheet2.Cells(f, 15).Value                           'Food Safety Passport
+            yl = DateDiff("m", l, x)
+            If yl > p Or yl = p Then fsp = fsp + 1
+            End If
+        If Sheet2.Cells(f, 5) = "Yes" Then                          'Infection Control
+        i = Sheet2.Cells(f, 13).Value
+        yi = DateDiff("m", i, x)
+        If yi > t Or yi = t Then ic = ic + 1
+        m = Sheet2.Cells(f, 16).Value                               'Infection Control Passport
+        ym = DateDiff("m", m, x)
+        If ym > p Or ym = p Then icp = icp + 1
+        End If
+            j = Sheet2.Cells(f, 8).Value                            'Core Skills
+            yj = DateDiff("m", j, x)
+            If yj > t Or yj = t Then cs = cs + 1
+        k = Sheet2.Cells(f, 14).Value
+        yk = DateDiff("m", k, x)
+        If yk > p Or yk = p Then hasp = hasp + 1
+    End If
+Next f
+
+On Error Resume Next
+
+status.Range("e9").Value = has
+status.Range("d9").Value = ((z - has) / z)
+status.Range("d9") = FormatPercent(status.Range("d9"), 1)
+
+status.Range("g9").Value = fs
+status.Range("f9").Value = ((zf - fs) / zf)
+status.Range("f9") = FormatPercent(status.Range("f9"), 1)
+
+status.Range("i9").Value = ic
+status.Range("h9").Value = ((zi - ic) / zi)
+status.Range("h9") = FormatPercent(status.Range("h9"), 1)
+
+status.Range("k9").Value = cs
+status.Range("j9").Value = ((z - cs) / z)
+status.Range("j9") = FormatPercent(status.Range("j9"), 1)
+
+status.Range("m9").Value = hasp
+status.Range("l9").Value = ((z - hasp) / z)
+status.Range("l9") = FormatPercent(status.Range("l9"), 1)
+
+status.Range("o9").Value = fsp
+status.Range("n9").Value = ((zf - fsp) / zf)
+status.Range("n9") = FormatPercent(status.Range("n9"), 1)
+
+status.Range("q9").Value = icp
+status.Range("p9").Value = ((zi - icp) / zi)
+status.Range("p9") = FormatPercent(status.Range("p9"), 1)
+
+n = (has + fs + ic + cs + hasp + fsp + icp)
+yn = ((3 * z) + (2 * zf) + (2 * zi))
+
+status.Range("r9").Value = ((yn - n) / yn)
+status.Range("r9") = FormatPercent(status.Range("r9"), 1)
+
+Application.ScreenUpdating = True
+
+End Sub
+Sub sheetthree()
+has = 0
+fs = 0
+ic = 0
+cs = 0
+hasp = 0
+fsp = 0
+icp = 0
+t = 12
+p = 24
+x = DateValue(Now)
+z = status.Range("c12").Value
+zf = status.Range("c13").Value
+zi = status.Range("c14").Value
+
+Application.ScreenUpdating = False
+
+For f = 4 To 6000
+    If Sheet3.Cells(f, 1) <> "" Then
+        g = Sheet3.Cells(f, 9).Value                                'Health and safety
+        yg = DateDiff("m", g, x)
+        If yg > t Or yg = t Then has = has + 1
+            If Sheet3.Cells(f, 4) = "Yes" Then                      'Food Safety
+            h = Sheet3.Cells(f, 12).Value
+            yh = DateDiff("m", h, x)
+            If yh > t Or yh = t Then fs = fs + 1
+            l = Sheet3.Cells(f, 15).Value                           'Food Safety Passport
+            yl = DateDiff("m", l, x)
+            If yl > p Or yl = p Then fsp = fsp + 1
+            End If
+        If Sheet3.Cells(f, 5) = "Yes" Then                          'Infection Control
+        i = Sheet3.Cells(f, 13).Value
+        yi = DateDiff("m", i, x)
+        If yi > t Or yi = t Then ic = ic + 1
+        m = Sheet3.Cells(f, 16).Value                               'Infection Control Passport
+        ym = DateDiff("m", m, x)
+        If ym > p Or ym = p Then icp = icp + 1
+        End If
+            j = Sheet3.Cells(f, 8).Value                            'Core Skills
+            yj = DateDiff("m", j, x)
+            If yj > t Or yj = t Then cs = cs + 1
+        k = Sheet3.Cells(f, 14).Value
+        yk = DateDiff("m", k, x)
+        If yk > p Or yk = p Then hasp = hasp + 1
+    End If
+Next f
+
+On Error Resume Next
+
+status.Range("e12").Value = has
+status.Range("d12").Value = ((z - has) / z)
+status.Range("d12") = FormatPercent(status.Range("d12"), 1)
+
+status.Range("g12").Value = fs
+status.Range("f12").Value = ((zf - fs) / zf)
+status.Range("f12") = FormatPercent(status.Range("f12"), 1)
+
+status.Range("i12").Value = ic
+status.Range("h12").Value = ((zi - ic) / zi)
+status.Range("h12") = FormatPercent(status.Range("h12"), 1)
+
+status.Range("k12").Value = cs
+status.Range("j12").Value = ((z - cs) / z)
+status.Range("j12") = FormatPercent(status.Range("j12"), 1)
+
+status.Range("m12").Value = hasp
+status.Range("l12").Value = ((z - hasp) / z)
+status.Range("l12") = FormatPercent(status.Range("l12"), 1)
+
+status.Range("o12").Value = fsp
+status.Range("n12").Value = ((zf - fsp) / zf)
+status.Range("n12") = FormatPercent(status.Range("n12"), 1)
+
+status.Range("q12").Value = icp
+status.Range("p12").Value = ((zi - icp) / zi)
+status.Range("p12") = FormatPercent(status.Range("p12"), 1)
+
+n = (has + fs + ic + cs + hasp + fsp + icp)
+yn = ((3 * z) + (2 * zf) + (2 * zi))
+
+status.Range("r12").Value = ((yn - n) / yn)
+status.Range("r12") = FormatPercent(status.Range("r12"), 1)
+
+Application.ScreenUpdating = True
+
+End Sub
+Sub sheetfour()
+has = 0
+fs = 0
+ic = 0
+cs = 0
+hasp = 0
+fsp = 0
+icp = 0
+t = 12
+p = 24
+x = DateValue(Now)
+z = status.Range("c15").Value
+zf = status.Range("c16").Value
+zi = status.Range("c17").Value
+
+For f = 4 To 6000
+    
+Application.ScreenUpdating = False
+
+    If Sheet4.Cells(f, 1) <> "" Then
+        g = Sheet4.Cells(f, 9).Value                                'Health and safety
+        yg = DateDiff("m", g, x)
+        If yg > t Or yg = t Then has = has + 1
+            If Sheet4.Cells(f, 4) = "Yes" Then                      'Food Safety
+            h = Sheet4.Cells(f, 12).Value
+            yh = DateDiff("m", h, x)
+            If yh > t Or yh = t Then fs = fs + 1
+            l = Sheet4.Cells(f, 15).Value                           'Food Safety Passport
+            yl = DateDiff("m", l, x)
+            If yl > p Or yl = p Then fsp = fsp + 1
+            End If
+        If Sheet4.Cells(f, 5) = "Yes" Then                          'Infection Control
+        i = Sheet4.Cells(f, 13).Value
+        yi = DateDiff("m", i, x)
+        If yi > t Or yi = t Then ic = ic + 1
+        m = Sheet4.Cells(f, 16).Value                               'Infection Control Passport
+        ym = DateDiff("m", m, x)
+        If ym > p Or ym = p Then icp = icp + 1
+        End If
+            j = Sheet4.Cells(f, 8).Value                            'Core Skills
+            yj = DateDiff("m", j, x)
+            If yj > t Or yj = t Then cs = cs + 1
+        k = Sheet4.Cells(f, 14).Value
+        yk = DateDiff("m", k, x)
+        If yk > p Or yk = p Then hasp = hasp + 1
+        
+    End If
+Next f
+
+On Error Resume Next
+
+status.Range("e15").Value = has
+status.Range("d15").Value = ((z - has) / z)
+status.Range("d15") = FormatPercent(status.Range("d15"), 1)
+
+status.Range("g15").Value = fs
+status.Range("f15").Value = ((zf - fs) / zf)
+status.Range("f15") = FormatPercent(status.Range("f15"), 1)
+
+status.Range("i15").Value = ic
+status.Range("h15").Value = ((zi - ic) / zi)
+status.Range("h15") = FormatPercent(status.Range("h15"), 1)
+
+status.Range("k15").Value = cs
+status.Range("j15").Value = ((z - cs) / z)
+status.Range("j15") = FormatPercent(status.Range("j15"), 1)
+
+status.Range("m15").Value = hasp
+status.Range("l15").Value = ((z - hasp) / z)
+status.Range("l15") = FormatPercent(status.Range("l15"), 1)
+
+status.Range("o15").Value = fsp
+status.Range("n15").Value = ((zf - fsp) / zf)
+status.Range("n15") = FormatPercent(status.Range("n15"), 1)
+
+status.Range("q15").Value = icp
+status.Range("p15").Value = ((zi - icp) / zi)
+status.Range("p15") = FormatPercent(status.Range("p15"), 1)
+
+n = (has + fs + ic + cs + hasp + fsp + icp)
+yn = ((3 * z) + (2 * zf) + (2 * zi))
+
+status.Range("r15").Value = ((yn - n) / yn)
+status.Range("r15") = FormatPercent(status.Range("r15"), 1)
+
+Application.ScreenUpdating = True
+
+End Sub
+
+Sub sheetfive()
+has = 0
+fs = 0
+ic = 0
+cs = 0
+hasp = 0
+fsp = 0
+icp = 0
+t = 12
+p = 24
+x = DateValue(Now)
+z = status.Range("c18").Value
+zf = status.Range("c19").Value
+zi = status.Range("c20").Value
+
+For f = 4 To 6000
+    
+Application.ScreenUpdating = False
+
+    If Sheet5.Cells(f, 1) <> "" Then
+        g = Sheet5.Cells(f, 9).Value                                'Health and safety
+        yg = DateDiff("m", g, x)
+        If yg > t Or yg = t Then has = has + 1
+            If Sheet5.Cells(f, 4) = "Yes" Then                      'Food Safety
+            h = Sheet5.Cells(f, 12).Value
+            yh = DateDiff("m", h, x)
+            If yh > t Or yh = t Then fs = fs + 1
+            l = Sheet5.Cells(f, 15).Value                           'Food Safety Passport
+            yl = DateDiff("m", l, x)
+            If yl > p Or yl = p Then fsp = fsp + 1
+            End If
+        If Sheet5.Cells(f, 5) = "Yes" Then                          'Infection Control
+        i = Sheet5.Cells(f, 13).Value
+        yi = DateDiff("m", i, x)
+        If yi > t Or yi = t Then ic = ic + 1
+        m = Sheet5.Cells(f, 16).Value                               'Infection Control Passport
+        ym = DateDiff("m", m, x)
+        If ym > p Or ym = p Then icp = icp + 1
+        End If
+            j = Sheet5.Cells(f, 8).Value                            'Core Skills
+            yj = DateDiff("m", j, x)
+            If yj > t Or yj = t Then cs = cs + 1
+        k = Sheet5.Cells(f, 14).Value
+        yk = DateDiff("m", k, x)
+        If yk > p Or yk = p Then hasp = hasp + 1
+        
+    End If
+Next f
+
+On Error Resume Next
+
+status.Range("e18").Value = has
+status.Range("d18").Value = ((z - has) / z)
+status.Range("d18") = FormatPercent(status.Range("d18"), 1)
+
+status.Range("g18").Value = fs
+status.Range("f18").Value = ((zf - fs) / zf)
+status.Range("f18") = FormatPercent(status.Range("f18"), 1)
+
+status.Range("i18").Value = ic
+status.Range("h18").Value = ((zi - ic) / zi)
+status.Range("h18") = FormatPercent(status.Range("h18"), 1)
+
+status.Range("k18").Value = cs
+status.Range("j18").Value = ((z - cs) / z)
+status.Range("j18") = FormatPercent(status.Range("j18"), 1)
+
+status.Range("m18").Value = hasp
+status.Range("l18").Value = ((z - hasp) / z)
+status.Range("l18") = FormatPercent(status.Range("l18"), 1)
+
+status.Range("o18").Value = fsp
+status.Range("n18").Value = ((zf - fsp) / zf)
+status.Range("n18") = FormatPercent(status.Range("n18"), 1)
+
+status.Range("q18").Value = icp
+status.Range("p18").Value = ((zi - icp) / zi)
+status.Range("p18") = FormatPercent(status.Range("p18"), 1)
+
+n = (has + fs + ic + cs + hasp + fsp + icp)
+yn = ((3 * z) + (2 * zf) + (2 * zi))
+
+status.Range("r18").Value = ((yn - n) / yn)
+status.Range("r18") = FormatPercent(status.Range("r18"), 1)
+
+Application.ScreenUpdating = True
+
+End Sub
+
+Sub sheetsix()
+has = 0
+fs = 0
+ic = 0
+cs = 0
+hasp = 0
+fsp = 0
+icp = 0
+t = 12
+p = 24
+x = DateValue(Now)
+z = status.Range("c21").Value
+zf = status.Range("c22").Value
+zi = status.Range("c23").Value
+
+For f = 4 To 6000
+    
+Application.ScreenUpdating = False
+
+    If Sheet6.Cells(f, 1) <> "" Then
+        g = Sheet6.Cells(f, 9).Value                                'Health and safety
+        yg = DateDiff("m", g, x)
+        If yg > t Or yg = t Then has = has + 1
+            If Sheet6.Cells(f, 4) = "Yes" Then                      'Food Safety
+            h = Sheet6.Cells(f, 12).Value
+            yh = DateDiff("m", h, x)
+            If yh > t Or yh = t Then fs = fs + 1
+            l = Sheet6.Cells(f, 15).Value                           'Food Safety Passport
+            yl = DateDiff("m", l, x)
+            If yl > p Or yl = p Then fsp = fsp + 1
+            End If
+        If Sheet6.Cells(f, 5) = "Yes" Then                          'Infection Control
+        i = Sheet6.Cells(f, 13).Value
+        yi = DateDiff("m", i, x)
+        If yi > t Or yi = t Then ic = ic + 1
+        m = Sheet6.Cells(f, 16).Value                               'Infection Control Passport
+        ym = DateDiff("m", m, x)
+        If ym > p Or ym = p Then icp = icp + 1
+        End If
+            j = Sheet6.Cells(f, 8).Value                            'Core Skills
+            yj = DateDiff("m", j, x)
+            If yj > t Or yj = t Then cs = cs + 1
+        k = Sheet6.Cells(f, 14).Value
+        yk = DateDiff("m", k, x)
+        If yk > p Or yk = p Then hasp = hasp + 1
+        
+    End If
+Next f
+
+On Error Resume Next
+
+status.Range("e21").Value = has
+status.Range("d21").Value = ((z - has) / z)
+status.Range("d21") = FormatPercent(status.Range("d21"), 1)
+
+status.Range("g21").Value = fs
+status.Range("f21").Value = ((zf - fs) / zf)
+status.Range("f21") = FormatPercent(status.Range("f21"), 1)
+
+status.Range("i21").Value = ic
+status.Range("h21").Value = ((zi - ic) / zi)
+status.Range("h21") = FormatPercent(status.Range("h21"), 1)
+
+status.Range("k21").Value = cs
+status.Range("j21").Value = ((z - cs) / z)
+status.Range("j21") = FormatPercent(status.Range("j21"), 1)
+
+status.Range("m21").Value = hasp
+status.Range("l21").Value = ((z - hasp) / z)
+status.Range("l21") = FormatPercent(status.Range("l21"), 1)
+
+status.Range("o21").Value = fsp
+status.Range("n21").Value = ((zf - fsp) / zf)
+status.Range("n21") = FormatPercent(status.Range("n21"), 1)
+
+status.Range("q21").Value = icp
+status.Range("p21").Value = ((zi - icp) / zi)
+status.Range("p21") = FormatPercent(status.Range("p21"), 1)
+
+n = (has + fs + ic + cs + hasp + fsp + icp)
+yn = ((3 * z) + (2 * zf) + (2 * zi))
+
+status.Range("r21").Value = ((yn - n) / yn)
+status.Range("r21") = FormatPercent(status.Range("r21"), 1)
+
+Application.ScreenUpdating = True
+
+End Sub
+
+Sub sheetseven()
+has = 0
+fs = 0
+ic = 0
+cs = 0
+hasp = 0
+fsp = 0
+icp = 0
+t = 12
+p = 24
+x = DateValue(Now)
+z = status.Range("c24").Value
+zf = status.Range("c25").Value
+zi = status.Range("c26").Value
+
+For f = 4 To 6000
+    
+Application.ScreenUpdating = False
+
+    If Sheet7.Cells(f, 1) <> "" Then
+        g = Sheet7.Cells(f, 9).Value                                'Health and safety
+        yg = DateDiff("m", g, x)
+        If yg > t Or yg = t Then has = has + 1
+            If Sheet7.Cells(f, 4) = "Yes" Then                      'Food Safety
+            h = Sheet7.Cells(f, 12).Value
+            yh = DateDiff("m", h, x)
+            If yh > t Or yh = t Then fs = fs + 1
+            l = Sheet7.Cells(f, 15).Value                           'Food Safety Passport
+            yl = DateDiff("m", l, x)
+            If yl > p Or yl = p Then fsp = fsp + 1
+            End If
+        If Sheet7.Cells(f, 5) = "Yes" Then                          'Infection Control
+        i = Sheet7.Cells(f, 13).Value
+        yi = DateDiff("m", i, x)
+        If yi > t Or yi = t Then ic = ic + 1
+        m = Sheet7.Cells(f, 16).Value                               'Infection Control Passport
+        ym = DateDiff("m", m, x)
+        If ym > p Or ym = p Then icp = icp + 1
+        End If
+            j = Sheet7.Cells(f, 8).Value                            'Core Skills
+            yj = DateDiff("m", j, x)
+            If yj > t Or yj = t Then cs = cs + 1
+        k = Sheet7.Cells(f, 14).Value
+        yk = DateDiff("m", k, x)
+        If yk > p Or yk = p Then hasp = hasp + 1
+        
+    End If
+Next f
+
+On Error Resume Next
+
+status.Range("e24").Value = has
+status.Range("d24").Value = ((z - has) / z)
+status.Range("d24") = FormatPercent(status.Range("d24"), 1)
+
+status.Range("g24").Value = fs
+status.Range("f24").Value = ((zf - fs) / zf)
+status.Range("f24") = FormatPercent(status.Range("f24"), 1)
+
+status.Range("i24").Value = ic
+status.Range("h24").Value = ((zi - ic) / zi)
+status.Range("h24") = FormatPercent(status.Range("h24"), 1)
+
+status.Range("k24").Value = cs
+status.Range("j24").Value = ((z - cs) / z)
+status.Range("j24") = FormatPercent(status.Range("j24"), 1)
+
+status.Range("m24").Value = hasp
+status.Range("l24").Value = ((z - hasp) / z)
+status.Range("l24") = FormatPercent(status.Range("l24"), 1)
+
+status.Range("o24").Value = fsp
+status.Range("n24").Value = ((zf - fsp) / zf)
+status.Range("n24") = FormatPercent(status.Range("n24"), 1)
+
+status.Range("q24").Value = icp
+status.Range("p24").Value = ((zi - icp) / zi)
+status.Range("p24") = FormatPercent(status.Range("p24"), 1)
+
+n = (has + fs + ic + cs + hasp + fsp + icp)
+yn = ((3 * z) + (2 * zf) + (2 * zi))
+
+status.Range("r24").Value = ((yn - n) / yn)
+status.Range("r24") = FormatPercent(status.Range("r24"), 1)
+
+Application.ScreenUpdating = True
+
+End Sub
+
+Sub sheeteight()
+has = 0
+fs = 0
+ic = 0
+cs = 0
+hasp = 0
+fsp = 0
+icp = 0
+t = 12
+p = 24
+x = DateValue(Now)
+z = status.Range("c27").Value
+zf = status.Range("c28").Value
+zi = status.Range("c29").Value
+
+For f = 4 To 6000
+    
+Application.ScreenUpdating = False
+
+    If Sheet8.Cells(f, 1) <> "" Then
+        g = Sheet8.Cells(f, 9).Value                                'Health and safety
+        yg = DateDiff("m", g, x)
+        If yg > t Or yg = t Then has = has + 1
+            If Sheet8.Cells(f, 4) = "Yes" Then                      'Food Safety
+            h = Sheet8.Cells(f, 12).Value
+            yh = DateDiff("m", h, x)
+            If yh > t Or yh = t Then fs = fs + 1
+            l = Sheet8.Cells(f, 15).Value                           'Food Safety Passport
+            yl = DateDiff("m", l, x)
+            If yl > p Or yl = p Then fsp = fsp + 1
+            End If
+        If Sheet8.Cells(f, 5) = "Yes" Then                          'Infection Control
+        i = Sheet8.Cells(f, 13).Value
+        yi = DateDiff("m", i, x)
+        If yi > t Or yi = t Then ic = ic + 1
+        m = Sheet8.Cells(f, 16).Value                               'Infection Control Passport
+        ym = DateDiff("m", m, x)
+        If ym > p Or ym = p Then icp = icp + 1
+        End If
+            j = Sheet8.Cells(f, 8).Value                            'Core Skills
+            yj = DateDiff("m", j, x)
+            If yj > t Or yj = t Then cs = cs + 1
+        k = Sheet8.Cells(f, 14).Value
+        yk = DateDiff("m", k, x)
+        If yk > p Or yk = p Then hasp = hasp + 1
+        
+    End If
+Next f
+
+On Error Resume Next
+
+status.Range("e27").Value = has
+status.Range("d27").Value = ((z - has) / z)
+status.Range("d27") = FormatPercent(status.Range("d27"), 1)
+
+status.Range("g27").Value = fs
+status.Range("f27").Value = ((zf - fs) / zf)
+status.Range("f27") = FormatPercent(status.Range("f27"), 1)
+
+status.Range("i27").Value = ic
+status.Range("h27").Value = ((zi - ic) / zi)
+status.Range("h27") = FormatPercent(status.Range("h27"), 1)
+
+status.Range("k27").Value = cs
+status.Range("j27").Value = ((z - cs) / z)
+status.Range("j27") = FormatPercent(status.Range("j27"), 1)
+
+status.Range("m27").Value = hasp
+status.Range("l27").Value = ((z - hasp) / z)
+status.Range("l27") = FormatPercent(status.Range("l27"), 1)
+
+status.Range("o27").Value = fsp
+status.Range("n27").Value = ((zf - fsp) / zf)
+status.Range("n27") = FormatPercent(status.Range("n27"), 1)
+
+status.Range("q27").Value = icp
+status.Range("p27").Value = ((zi - icp) / zi)
+status.Range("p27") = FormatPercent(status.Range("p27"), 1)
+
+n = (has + fs + ic + cs + hasp + fsp + icp)
+yn = ((3 * z) + (2 * zf) + (2 * zi))
+
+status.Range("r27").Value = ((yn - n) / yn)
+status.Range("r27") = FormatPercent(status.Range("r27"), 1)
+
+Application.ScreenUpdating = True
+
+End Sub
+
+Sub sheetnine()
+has = 0
+fs = 0
+ic = 0
+cs = 0
+hasp = 0
+fsp = 0
+icp = 0
+t = 12
+p = 24
+x = DateValue(Now)
+z = status.Range("c30").Value
+zf = status.Range("c31").Value
+zi = status.Range("c32").Value
+
+For f = 4 To 6000
+    
+Application.ScreenUpdating = False
+
+    If Sheet9.Cells(f, 1) <> "" Then
+        g = Sheet9.Cells(f, 9).Value                                'Health and safety
+        yg = DateDiff("m", g, x)
+        If yg > t Or yg = t Then has = has + 1
+            If Sheet9.Cells(f, 4) = "Yes" Then                      'Food Safety
+            h = Sheet9.Cells(f, 12).Value
+            yh = DateDiff("m", h, x)
+            If yh > t Or yh = t Then fs = fs + 1
+            l = Sheet9.Cells(f, 15).Value                           'Food Safety Passport
+            yl = DateDiff("m", l, x)
+            If yl > p Or yl = p Then fsp = fsp + 1
+            End If
+        If Sheet9.Cells(f, 5) = "Yes" Then                          'Infection Control
+        i = Sheet9.Cells(f, 13).Value
+        yi = DateDiff("m", i, x)
+        If yi > t Or yi = t Then ic = ic + 1
+        m = Sheet9.Cells(f, 16).Value                               'Infection Control Passport
+        ym = DateDiff("m", m, x)
+        If ym > p Or ym = p Then icp = icp + 1
+        End If
+            j = Sheet9.Cells(f, 8).Value                            'Core Skills
+            yj = DateDiff("m", j, x)
+            If yj > t Or yj = t Then cs = cs + 1
+        k = Sheet9.Cells(f, 14).Value
+        yk = DateDiff("m", k, x)
+        If yk > p Or yk = p Then hasp = hasp + 1
+        
+    End If
+Next f
+
+On Error Resume Next
+
+status.Range("e30").Value = has
+status.Range("d30").Value = ((z - has) / z)
+status.Range("d30") = FormatPercent(status.Range("d30"), 1)
+
+status.Range("g30").Value = fs
+status.Range("f30").Value = ((zf - fs) / zf)
+status.Range("f30") = FormatPercent(status.Range("f30"), 1)
+
+status.Range("i30").Value = ic
+status.Range("h30").Value = ((zi - ic) / zi)
+status.Range("h30") = FormatPercent(status.Range("h30"), 1)
+
+status.Range("k30").Value = cs
+status.Range("j30").Value = ((z - cs) / z)
+status.Range("j30") = FormatPercent(status.Range("j30"), 1)
+
+status.Range("m30").Value = hasp
+status.Range("l30").Value = ((z - hasp) / z)
+status.Range("l30") = FormatPercent(status.Range("l30"), 1)
+
+status.Range("o30").Value = fsp
+status.Range("n30").Value = ((zf - fsp) / zf)
+status.Range("n30") = FormatPercent(status.Range("n30"), 1)
+
+status.Range("q30").Value = icp
+status.Range("p30").Value = ((zi - icp) / zi)
+status.Range("p30") = FormatPercent(status.Range("p30"), 1)
+
+n = (has + fs + ic + cs + hasp + fsp + icp)
+yn = ((3 * z) + (2 * zf) + (2 * zi))
+
+status.Range("r30").Value = ((yn - n) / yn)
+status.Range("r30") = FormatPercent(status.Range("r30"), 1)
+
+Application.ScreenUpdating = True
+
+End Sub
+
+Sub sheetten()
+has = 0
+fs = 0
+ic = 0
+cs = 0
+hasp = 0
+fsp = 0
+icp = 0
+t = 12
+p = 24
+x = DateValue(Now)
+z = status.Range("c33").Value
+zf = status.Range("c34").Value
+zi = status.Range("c35").Value
+
+For f = 4 To 6000
+    
+Application.ScreenUpdating = False
+
+    If Sheet10.Cells(f, 1) <> "" Then
+        g = Sheet10.Cells(f, 9).Value                                'Health and safety
+        yg = DateDiff("m", g, x)
+        If yg > t Or yg = t Then has = has + 1
+            If Sheet10.Cells(f, 4) = "Yes" Then                      'Food Safety
+            h = Sheet10.Cells(f, 12).Value
+            yh = DateDiff("m", h, x)
+            If yh > t Or yh = t Then fs = fs + 1
+            l = Sheet10.Cells(f, 15).Value                           'Food Safety Passport
+            yl = DateDiff("m", l, x)
+            If yl > p Or yl = p Then fsp = fsp + 1
+            End If
+        If Sheet10.Cells(f, 5) = "Yes" Then                          'Infection Control
+        i = Sheet10.Cells(f, 13).Value
+        yi = DateDiff("m", i, x)
+        If yi > t Or yi = t Then ic = ic + 1
+        m = Sheet10.Cells(f, 16).Value                               'Infection Control Passport
+        ym = DateDiff("m", m, x)
+        If ym > p Or ym = p Then icp = icp + 1
+        End If
+            j = Sheet10.Cells(f, 8).Value                            'Core Skills
+            yj = DateDiff("m", j, x)
+            If yj > t Or yj = t Then cs = cs + 1
+        k = Sheet10.Cells(f, 14).Value
+        yk = DateDiff("m", k, x)
+        If yk > p Or yk = p Then hasp = hasp + 1
+        
+    End If
+Next f
+
+On Error Resume Next
+
+status.Range("e33").Value = has
+status.Range("d33").Value = ((z - has) / z)
+status.Range("d33") = FormatPercent(status.Range("d33"), 1)
+
+status.Range("g33").Value = fs
+status.Range("f33").Value = ((zf - fs) / zf)
+status.Range("f33") = FormatPercent(status.Range("f33"), 1)
+
+status.Range("i33").Value = ic
+status.Range("h33").Value = ((zi - ic) / zi)
+status.Range("h33") = FormatPercent(status.Range("h33"), 1)
+
+status.Range("k33").Value = cs
+status.Range("j33").Value = ((z - cs) / z)
+status.Range("j33") = FormatPercent(status.Range("j33"), 1)
+
+status.Range("m33").Value = hasp
+status.Range("l33").Value = ((z - hasp) / z)
+status.Range("l33") = FormatPercent(status.Range("l33"), 1)
+
+status.Range("o33").Value = fsp
+status.Range("n33").Value = ((zf - fsp) / zf)
+status.Range("n33") = FormatPercent(status.Range("n33"), 1)
+
+status.Range("q33").Value = icp
+status.Range("p33").Value = ((zi - icp) / zi)
+status.Range("p33") = FormatPercent(status.Range("p33"), 1)
+
+n = (has + fs + ic + cs + hasp + fsp + icp)
+yn = ((3 * z) + (2 * zf) + (2 * zi))
+
+status.Range("r33").Value = ((yn - n) / yn)
+status.Range("r33") = FormatPercent(status.Range("r33"), 1)
+
+Application.ScreenUpdating = True
+
+End Sub

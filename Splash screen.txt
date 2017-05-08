@@ -1,0 +1,17 @@
+Sub offset_practice()
+Dim rng As Range, code As Variant, i As Integer
+
+code = "dfg"
+
+Set rng = Range("c3:c6")
+    For i = 1 To rng.Count
+        If rng.Cells(i).Value = code Then
+        MsgBox rng.Cells(i).Offset(0, -1).Value
+        End If
+    Next i
+
+End Sub
+
+'amounts go in column b of sheet
+'code goes in column c in above example
+'i is used to loop by row only by omitting the , column statement

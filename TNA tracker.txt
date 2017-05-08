@@ -1,0 +1,860 @@
+'TNA Progress form
+'runs under "formrun" CTRL+SHIFT+F
+
+Private Sub okbutton_Click()
+Unload Me
+End Sub
+
+Private Sub pbut_Click()
+progressform.printform
+End Sub
+
+Private Sub UserForm_Activate()
+Dim a As Integer, b As Integer, c As Integer
+Dim p As Integer, g As Integer, y As Integer, r As Integer
+Dim pp As String, gp As String, yp As String, rp As String
+Dim ppc As Integer, gpc As Integer, ypc As Integer, rpc As Integer
+
+
+
+Application.ScreenUpdating = False
+
+c = 0
+p = 0
+g = 0
+y = 0
+r = 0
+
+For a = 2 To 700
+    For b = 4 To 16
+        If Cells(a, b) <> "" And Cells(a, b).Interior.ColorIndex = xlNone Then
+        Cells(a, b).Interior.ColorIndex = 3
+        End If
+            If Cells(a, b).Interior.ColorIndex = 3 Then r = r + 1
+            If Cells(a, b).Interior.ColorIndex = 6 Then y = y + 1
+            If Cells(a, b).Interior.ColorIndex = 4 Then g = g + 1
+            If Cells(a, b).Interior.ColorIndex = 38 Then p = p + 1
+    Next b
+Next a
+c = r + y + g
+progressform.cbox.Value = c
+progressform.rbox.Value = r
+progressform.ybox.Value = y
+progressform.gbox.Value = g
+progressform.pbox.Value = p
+
+rpc = ((r / c) * 100)
+ypc = ((y / c) * 100)
+gpc = ((g / c) * 100)
+ppc = ((p / c) * 100)
+
+pp = ppc & "%"
+yp = ypc & "%"
+gp = gpc & "%"
+rp = rpc & "%"
+
+pper.Value = pp
+yper.Value = yp
+gper.Value = gp
+rper.Value = rp
+
+End Sub
+
+----------------------------------------------------------------------------------------------
+
+'queryform
+
+Private Sub fbutton_Click()
+'runs under module "qform" CTRL+SHITF+Q
+
+Dim a As Integer
+
+Application.ScreenUpdating = False
+
+On Error Resume Next
+
+ActiveSheet.Cells.Find(what:=queryform.fbox.Value, after:=ActiveCell, LookIn:=xlValues, lookat:=xlPart, _
+searchorder:=xlByRows, searchdirection:=xlNext, MatchCase:=False, searchformat:=False).Activate
+
+a = ActiveCell.Row
+
+
+            queryform.fnamebox.Value = Cells(a, 2).Value
+            queryform.snamebox.Value = Cells(a, 3).Value
+'            queryform.sitebox.Value = Cells(a, 10).Value
+'            queryform.locbox.Value = Cells(a, 11).Value
+                If ActiveCell.Interior.ColorIndex = 4 Then queryform.statusbox.Value = "Complete"
+                If ActiveCell.Interior.ColorIndex = 6 Then queryform.statusbox.Value = "Booked"
+                If ActiveCell.Interior.ColorIndex = 38 Then queryform.statusbox.Value = "Unplanned"
+                If ActiveCell.Interior.ColorIndex = 3 Then queryform.statusbox.Value = "To Book"
+        
+
+Application.ScreenUpdating = True
+
+    
+End Sub
+
+Private Sub okbutton_Click()
+Unload Me
+End Sub
+
+Private Sub printbutton_Click()
+printform
+End Sub
+------------------------------------------------------------------------------------------------------------------------------
+
+'tnaform
+Dim a As Integer
+'runs under "tnaform" CTRL+SHIFT+T
+
+Private Sub cancelbutton_Click()
+Unload Me
+End Sub
+
+Private Sub cg1_Click()
+a = ActiveCell.Row
+tnaform.cbox1.BackColor = &H80FF80
+ActiveSheet.Cells(a, 4).Interior.ColorIndex = 4
+End Sub
+
+Private Sub cg2_Click()
+a = ActiveCell.Row
+tnaform.cbox2.BackColor = &H80FF80
+ActiveSheet.Cells(a, 5).Interior.ColorIndex = 4
+End Sub
+
+Private Sub cg3_Click()
+a = ActiveCell.Row
+tnaform.cbox3.BackColor = &H80FF80
+ActiveSheet.Cells(a, 6).Interior.ColorIndex = 4
+End Sub
+
+Private Sub cg4_Click()
+a = ActiveCell.Row
+tnaform.cbox4.BackColor = &H80FF80
+ActiveSheet.Cells(a, 7).Interior.ColorIndex = 4
+End Sub
+
+Private Sub cg5_Click()
+a = ActiveCell.Row
+tnaform.cbox5.BackColor = &H80FF80
+ActiveSheet.Cells(a, 8).Interior.ColorIndex = 4
+End Sub
+
+Private Sub cg6_Click()
+a = ActiveCell.Row
+tnaform.cbox6.BackColor = &H80FF80
+ActiveSheet.Cells(a, 9).Interior.ColorIndex = 4
+End Sub
+
+Private Sub cg7_Click()
+a = ActiveCell.Row
+tnaform.cbox7.BackColor = &H80FF80
+ActiveSheet.Cells(a, 10).Interior.ColorIndex = 4
+End Sub
+
+Private Sub cg8_Click()
+a = ActiveCell.Row
+tnaform.cbox8.BackColor = &H80FF80
+ActiveSheet.Cells(a, 11).Interior.ColorIndex = 4
+End Sub
+
+Private Sub cg9_Click()
+a = ActiveCell.Row
+tnaform.cbox9.BackColor = &H80FF80
+ActiveSheet.Cells(a, 12).Interior.ColorIndex = 4
+End Sub
+
+Private Sub cp1_Click()
+a = ActiveCell.Row
+tnaform.cbox1.BackColor = &HFF80FF
+ActiveSheet.Cells(a, 4).Interior.ColorIndex = 38
+End Sub
+
+Private Sub cp2_Click()
+a = ActiveCell.Row
+tnaform.cbox2.BackColor = &HFF80FF
+ActiveSheet.Cells(a, 5).Interior.ColorIndex = 38
+End Sub
+
+Private Sub cp3_Click()
+a = ActiveCell.Row
+tnaform.cbox3.BackColor = &HFF80FF
+ActiveSheet.Cells(a, 6).Interior.ColorIndex = 38
+End Sub
+
+Private Sub cp4_Click()
+a = ActiveCell.Row
+tnaform.cbox4.BackColor = &HFF80FF
+ActiveSheet.Cells(a, 7).Interior.ColorIndex = 38
+End Sub
+
+Private Sub cp5_Click()
+a = ActiveCell.Row
+tnaform.cbox5.BackColor = &HFF80FF
+ActiveSheet.Cells(a, 8).Interior.ColorIndex = 38
+End Sub
+
+Private Sub cp6_Click()
+a = ActiveCell.Row
+tnaform.cbox6.BackColor = &HFF80FF
+ActiveSheet.Cells(a, 9).Interior.ColorIndex = 38
+End Sub
+
+Private Sub cp7_Click()
+a = ActiveCell.Row
+tnaform.cbox7.BackColor = &HFF80FF
+ActiveSheet.Cells(a, 10).Interior.ColorIndex = 38
+End Sub
+
+Private Sub cp8_Click()
+a = ActiveCell.Row
+tnaform.cbox8.BackColor = &HFF80FF
+ActiveSheet.Cells(a, 11).Interior.ColorIndex = 38
+End Sub
+
+Private Sub cp9_Click()
+a = ActiveCell.Row
+tnaform.cbox9.BackColor = &HFF80FF
+ActiveSheet.Cells(a, 12).Interior.ColorIndex = 38
+End Sub
+
+Private Sub ctick1_Click()
+a = ActiveCell.Row
+ActiveSheet.Cells(a, 4).Value = tnaform.cbox1.Value
+End Sub
+
+Private Sub ctick2_Click()
+a = ActiveCell.Row
+ActiveSheet.Cells(a, 5).Value = tnaform.cbox2.Value
+End Sub
+
+Private Sub ctick3_Click()
+a = ActiveCell.Row
+ActiveSheet.Cells(a, 6).Value = tnaform.cbox3.Value
+End Sub
+
+Private Sub ctick4_Click()
+a = ActiveCell.Row
+ActiveSheet.Cells(a, 7).Value = tnaform.cbox4.Value
+End Sub
+
+Private Sub ctick5_Click()
+a = ActiveCell.Row
+ActiveSheet.Cells(a, 8).Value = tnaform.cbox5.Value
+End Sub
+
+Private Sub ctick6_Click()
+a = ActiveCell.Row
+ActiveSheet.Cells(a, 9).Value = tnaform.cbox6.Value
+End Sub
+
+Private Sub ctick7_Click()
+a = ActiveCell.Row
+ActiveSheet.Cells(a, 10).Value = tnaform.cbox7.Value
+End Sub
+
+Private Sub ctick8_Click()
+a = ActiveCell.Row
+ActiveSheet.Cells(a, 11).Value = tnaform.cbox8.Value
+End Sub
+
+Private Sub ctick9_Click()
+a = ActiveCell.Row
+ActiveSheet.Cells(a, 12).Value = tnaform.cbox9.Value
+End Sub
+
+Private Sub cx1_Click()
+a = ActiveCell.Row
+tnaform.cbox1.Value = ""
+ActiveSheet.Cells(a, 4).Value = ""
+tnaform.cbox1.BackColor = &HFFFFFF
+ActiveSheet.Cells(a, 4).Interior.ColorIndex = none
+End Sub
+
+Private Sub cx2_Click()
+a = ActiveCell.Row
+tnaform.cbox2.Value = ""
+ActiveSheet.Cells(a, 5).Value = ""
+tnaform.cbox2.BackColor = &HFFFFFF
+ActiveSheet.Cells(a, 5).Interior.ColorIndex = none
+End Sub
+
+Private Sub cx3_Click()
+a = ActiveCell.Row
+tnaform.cbox3.Value = ""
+ActiveSheet.Cells(a, 6).Value = ""
+tnaform.cbox3.BackColor = &HFFFFFF
+ActiveSheet.Cells(a, 6).Interior.ColorIndex = none
+End Sub
+
+Private Sub cx4_Click()
+a = ActiveCell.Row
+tnaform.cbox4.Value = ""
+ActiveSheet.Cells(a, 7) = ""
+tnaform.cbox4.BackColor = &HFFFFFF
+ActiveSheet.Cells(a, 7).Interior.ColorIndex = none
+End Sub
+
+Private Sub cx5_Click()
+a = ActiveCell.Row
+tnaform.cbox5.Value = ""
+ActiveSheet.Cells(a, 8).Value = ""
+tnaform.cbox5.BackColor = &HFFFFFF
+ActiveSheet.Cells(a, 8).Interior.ColorIndex = none
+End Sub
+
+Private Sub cx6_Click()
+a = ActiveCell.Row
+tnaform.cbox6.Value = ""
+ActiveSheet.Cells(a, 9).Value = ""
+tnaform.cbox6.BackColor = &HFFFFFF
+ActiveSheet.Cells(a, 9).Interior.ColorIndex = none
+End Sub
+
+Private Sub cx7_Click()
+a = ActiveCell.Row
+tnaform.cbox7.Value = ""
+ActiveSheet.Cells(a, 10).Value = ""
+tnaform.cbox7.BackColor = &HFFFFFF
+ActiveSheet.Cells(a, 10).Interior.ColorIndex = none
+End Sub
+
+Private Sub cx8_Click()
+a = ActiveCell.Row
+tnaform.cbox8.Value = ""
+ActiveSheet.Cells(a, 11).Value = ""
+tnaform.cbox8.BackColor = &HFFFFFF
+ActiveSheet.Cells(a, 11).Interior.ColorIndex = none
+End Sub
+
+Private Sub cx9_Click()
+a = ActiveCell.Row
+tnaform.cbox9.Value = ""
+ActiveSheet.Cells(a, 12).Value = ""
+tnaform.cbox9.BackColor = &HFFFFFF
+ActiveSheet.Cells(a, 12).Interior.ColorIndex = none
+End Sub
+
+Private Sub cy1_Click()
+a = ActiveCell.Row
+tnaform.cbox1.BackColor = &HFFFF&
+ActiveSheet.Cells(a, 4).Interior.ColorIndex = 6
+End Sub
+
+Private Sub cy2_Click()
+a = ActiveCell.Row
+tnaform.cbox2.BackColor = &HFFFF&
+ActiveSheet.Cells(a, 5).Interior.ColorIndex = 6
+End Sub
+
+Private Sub cy3_Click()
+a = ActiveCell.Row
+tnaform.cbox3.BackColor = &HFFFF&
+ActiveSheet.Cells(a, 6).Interior.ColorIndex = 6
+End Sub
+
+Private Sub cy4_Click()
+a = ActiveCell.Row
+tnaform.cbox4.BackColor = &HFFFF&
+ActiveSheet.Cells(a, 7).Interior.ColorIndex = 6
+End Sub
+
+Private Sub cy5_Click()
+a = ActiveCell.Row
+tnaform.cbox5.BackColor = &HFFFF&
+ActiveSheet.Cells(a, 8).Interior.ColorIndex = 6
+End Sub
+
+Private Sub cy6_Click()
+a = ActiveCell.Row
+tnaform.cbox6.BackColor = &HFFFF&
+ActiveSheet.Cells(a, 9).Interior.ColorIndex = 6
+End Sub
+
+Private Sub cy7_Click()
+a = ActiveCell.Row
+tnaform.cbox7.BackColor = &HFFFF&
+ActiveSheet.Cells(a, 10).Interior.ColorIndex = 6
+End Sub
+
+Private Sub cy8_Click()
+a = ActiveCell.Row
+tnaform.cbox8.BackColor = &HFFFF&
+ActiveSheet.Cells(a, 11).Interior.ColorIndex = 6
+End Sub
+
+Private Sub cy9_Click()
+a = ActiveCell.Row
+tnaform.cbox9.BackColor = &HFFFF&
+ActiveSheet.Cells(a, 12).Interior.ColorIndex = 6
+End Sub
+
+Private Sub fbutton_Click()
+Application.Run "formload"
+End Sub
+
+
+
+
+
+Private Sub lg1_Click()
+a = ActiveCell.Row
+tnaform.lbox1.BackColor = &H80FF80
+ActiveSheet.Cells(a, 13).Interior.ColorIndex = 4
+End Sub
+
+Private Sub lg2_Click()
+a = ActiveCell.Row
+tnaform.lbox2.BackColor = &H80FF80
+ActiveSheet.Cells(a, 14).Interior.ColorIndex = 4
+End Sub
+
+Private Sub lg3_Click()
+a = ActiveCell.Row
+tnaform.lbox3.BackColor = &H80FF80
+ActiveSheet.Cells(a, 15).Interior.ColorIndex = 4
+End Sub
+
+Private Sub lp1_Click()
+a = ActiveCell.Row
+tnaform.lbox1.BackColor = &HFF80FF
+ActiveSheet.Cells(a, 13).Interior.ColorIndex = 38
+End Sub
+
+Private Sub lp2_Click()
+a = ActiveCell.Row
+tnaform.lbox2.BackColor = &HFF80FF
+ActiveSheet.Cells(a, 14).Interior.ColorIndex = 38
+End Sub
+
+Private Sub lp3_Click()
+a = ActiveCell.Row
+tnaform.lbox3.BackColor = &HFF80FF
+ActiveSheet.Cells(a, 15).Interior.ColorIndex = 38
+End Sub
+
+Private Sub ltick1_Click()
+a = ActiveCell.Row
+ActiveSheet.Cells(a, 13).Value = tnaform.lbox1.Value
+End Sub
+
+Private Sub ltick2_Click()
+a = ActiveCell.Row
+ActiveSheet.Cells(a, 14).Value = tnaform.lbox2.Value
+End Sub
+
+Private Sub ltick3_Click()
+a = ActiveCell.Row
+ActiveSheet.Cells(a, 15).Value = tnaform.lbox3.Value
+End Sub
+
+Private Sub lx1_Click()
+a = ActiveCell.Row
+tnaform.lbox1.Value = ""
+ActiveSheet.Cells(a, 13).Value = ""
+tnaform.lbox1.BackColor = &HFFFFFF
+ActiveSheet.Cells(a, 13).Interior.ColorIndex = none
+End Sub
+
+Private Sub lx2_Click()
+a = ActiveCell.Row
+tnaform.lbox2.Value = ""
+ActiveSheet.Cells(a, 14).Value = ""
+tnaform.lbox2.BackColor = &HFFFFFF
+ActiveSheet.Cells(a, 14).Interior.ColorIndex = none
+End Sub
+
+Private Sub lx3_Click()
+a = ActiveCell.Row
+tnaform.lbox3.Value = ""
+ActiveSheet.Cells(a, 15).Value = ""
+tnaform.lbox3.BackColor = &HFFFFFF
+ActiveSheet.Cells(a, 15).Interior.ColorIndex = none
+End Sub
+
+Private Sub ly1_Click()
+a = ActiveCell.Row
+tnaform.lbox1.BackColor = &HFFFF&
+ActiveSheet.Cells(a, 13).Interior.ColorIndex = 6
+End Sub
+
+Private Sub ly2_Click()
+a = ActiveCell.Row
+tnaform.lbox2.BackColor = &HFFFF&
+ActiveSheet.Cells(a, 14).Interior.ColorIndex = 6
+End Sub
+
+Private Sub ly3_Click()
+a = ActiveCell.Row
+tnaform.lbox3.BackColor = &HFFFF&
+ActiveSheet.Cells(a, 15).Interior.ColorIndex = 6
+End Sub
+
+Private Sub og1_Click()
+a = ActiveCell.Row
+tnaform.obox1.BackColor = &H80FF80
+ActiveSheet.Cells(a, 16).Interior.ColorIndex = 4
+End Sub
+
+Private Sub op1_Click()
+a = ActiveCell.Row
+tnaform.obox1.BackColor = &HFF80FF
+ActiveSheet.Cells(a, 16).Interior.ColorIndex = 38
+End Sub
+
+Private Sub otick1_Click()
+a = ActiveCell.Row
+ActiveSheet.Cells(a, 16).Value = tnaform.obox1.Value
+End Sub
+
+Private Sub ox1_Click()
+a = ActiveCell.Row
+tnaform.obox1.Value = ""
+ActiveSheet.Cells(a, 16).Value = ""
+tnaform.obox1.BackColor = &HFFFFFF
+ActiveSheet.Cells(a, 16).Interior.ColorIndex = none
+End Sub
+
+Private Sub oy1_Click()
+a = ActiveCell.Row
+tnaform.obox1.BackColor = &HFFFF&
+ActiveSheet.Cells(a, 16).Interior.ColorIndex = 6
+End Sub
+
+Private Sub printbutton_Click()
+printform
+End Sub
+
+
+Private Sub SpinButton1_SpinDown()
+Dim a As Integer
+
+a = ActiveCell.Row
+a = a + 1
+Cells(a, 16).Select
+tnaform.fnamebox.Value = Cells(a, 2).Value
+tnaform.snamebox.Value = Cells(a, 3).Value
+tnaform.cbox1.Value = Cells(a, 4).Value
+    If Cells(a, 4).Interior.ColorIndex = 3 Then tnaform.cbox1.BackColor = &HFF&
+    If Cells(a, 4).Interior.ColorIndex = 6 Then tnaform.cbox1.BackColor = &HFFFF&
+    If Cells(a, 4).Interior.ColorIndex = 4 Then tnaform.cbox1.BackColor = &H80FF80
+    If Cells(a, 4).Interior.ColorIndex = 38 Then tnaform.cbox1.BackColor = &HFF80FF
+tnaform.cbox2.Value = Cells(a, 5).Value
+    If Cells(a, 5).Interior.ColorIndex = 3 Then tnaform.cbox2.BackColor = &HFF&
+    If Cells(a, 5).Interior.ColorIndex = 6 Then tnaform.cbox2.BackColor = &HFFFF&
+    If Cells(a, 5).Interior.ColorIndex = 4 Then tnaform.cbox2.BackColor = &H80FF80
+    If Cells(a, 5).Interior.ColorIndex = 38 Then tnaform.cbox2.BackColor = &HFF80FF
+tnaform.cbox3.Value = Cells(a, 6).Value
+    If Cells(a, 6).Interior.ColorIndex = 3 Then tnaform.cbox3.BackColor = &HFF&
+    If Cells(a, 6).Interior.ColorIndex = 6 Then tnaform.cbox3.BackColor = &HFFFF&
+    If Cells(a, 6).Interior.ColorIndex = 4 Then tnaform.cbox3.BackColor = &H80FF80
+    If Cells(a, 6).Interior.ColorIndex = 38 Then tnaform.cbox3.BackColor = &HFF80FF
+tnaform.cbox4.Value = Cells(a, 7).Value
+    If Cells(a, 7).Interior.ColorIndex = 3 Then tnaform.cbox4.BackColor = &HFF&
+    If Cells(a, 7).Interior.ColorIndex = 6 Then tnaform.cbox4.BackColor = &HFFFF&
+    If Cells(a, 7).Interior.ColorIndex = 4 Then tnaform.cbox4.BackColor = &H80FF80
+    If Cells(a, 7).Interior.ColorIndex = 38 Then tnaform.cbox4.BackColor = &HFF80FF
+tnaform.cbox5.Value = Cells(a, 8).Value
+    If Cells(a, 8).Interior.ColorIndex = 3 Then tnaform.cbox5.BackColor = &HFF&
+    If Cells(a, 8).Interior.ColorIndex = 6 Then tnaform.cbox5.BackColor = &HFFFF&
+    If Cells(a, 8).Interior.ColorIndex = 4 Then tnaform.cbox5.BackColor = &H80FF80
+    If Cells(a, 8).Interior.ColorIndex = 38 Then tnaform.cbox5.BackColor = &HFF80FF
+tnaform.cbox6.Value = Cells(a, 9).Value
+    If Cells(a, 9).Interior.ColorIndex = 3 Then tnaform.cbox6.BackColor = &HFF&
+    If Cells(a, 9).Interior.ColorIndex = 6 Then tnaform.cbox6.BackColor = &HFFFF&
+    If Cells(a, 9).Interior.ColorIndex = 4 Then tnaform.cbox6.BackColor = &H80FF80
+    If Cells(a, 9).Interior.ColorIndex = 38 Then tnaform.cbox6.BackColor = &HFF80FF
+tnaform.cbox7.Value = Cells(a, 10).Value
+    If Cells(a, 10).Interior.ColorIndex = 3 Then tnaform.cbox7.BackColor = &HFF&
+    If Cells(a, 10).Interior.ColorIndex = 6 Then tnaform.cbox7.BackColor = &HFFFF&
+    If Cells(a, 10).Interior.ColorIndex = 4 Then tnaform.cbox7.BackColor = &H80FF80
+    If Cells(a, 10).Interior.ColorIndex = 38 Then tnaform.cbox7.BackColor = &HFF80FF
+tnaform.cbox8.Value = Cells(a, 11).Value
+    If Cells(a, 11).Interior.ColorIndex = 3 Then tnaform.cbox8.BackColor = &HFF&
+    If Cells(a, 11).Interior.ColorIndex = 6 Then tnaform.cbox8.BackColor = &HFFFF&
+    If Cells(a, 11).Interior.ColorIndex = 4 Then tnaform.cbox8.BackColor = &H80FF80
+    If Cells(a, 11).Interior.ColorIndex = 38 Then tnaform.cbox8.BackColor = &HFF80FF
+tnaform.cbox9.Value = Cells(a, 12).Value
+    If Cells(a, 12).Interior.ColorIndex = 3 Then tnaform.cbox9.BackColor = &HFF&
+    If Cells(a, 12).Interior.ColorIndex = 6 Then tnaform.cbox9.BackColor = &HFFFF&
+    If Cells(a, 12).Interior.ColorIndex = 4 Then tnaform.cbox9.BackColor = &H80FF80
+    If Cells(a, 12).Interior.ColorIndex = 38 Then tnaform.cbox9.BackColor = &HFF80FF
+tnaform.lbox1.Value = Cells(a, 13).Value
+    If Cells(a, 13).Interior.ColorIndex = 3 Then tnaform.lbox1.BackColor = &HFF&
+    If Cells(a, 13).Interior.ColorIndex = 6 Then tnaform.lbox1.BackColor = &HFFFF&
+    If Cells(a, 13).Interior.ColorIndex = 4 Then tnaform.lbox1.BackColor = &H80FF80
+    If Cells(a, 13).Interior.ColorIndex = 38 Then tnaform.lbox1.BackColor = &HFF80FF
+tnaform.lbox2.Value = Cells(a, 14).Value
+    If Cells(a, 14).Interior.ColorIndex = 3 Then tnaform.lbox2.BackColor = &HFF&
+    If Cells(a, 14).Interior.ColorIndex = 6 Then tnaform.lbox2.BackColor = &HFFFF&
+    If Cells(a, 14).Interior.ColorIndex = 4 Then tnaform.lbox2.BackColor = &H80FF80
+    If Cells(a, 14).Interior.ColorIndex = 38 Then tnaform.lbox2.BackColor = &HFF80FF
+tnaform.lbox3.Value = Cells(a, 15).Value
+    If Cells(a, 15).Interior.ColorIndex = 3 Then tnaform.lbox3.BackColor = &HFF&
+    If Cells(a, 15).Interior.ColorIndex = 6 Then tnaform.lbox3.BackColor = &HFFFF&
+    If Cells(a, 15).Interior.ColorIndex = 4 Then tnaform.lbox3.BackColor = &H80FF80
+    If Cells(a, 15).Interior.ColorIndex = 38 Then tnaform.lbox3.BackColor = &HFF80FF
+tnaform.obox1.Value = Cells(a, 16).Value
+    If Cells(a, 16).Interior.ColorIndex = 3 Then tnaform.obox1.BackColor = &HFF&
+    If Cells(a, 16).Interior.ColorIndex = 6 Then tnaform.obox1.BackColor = &HFFFF&
+    If Cells(a, 16).Interior.ColorIndex = 4 Then tnaform.obox1.BackColor = &H80FF80
+    If Cells(a, 16).Interior.ColorIndex = 38 Then tnaform.obox1.BackColor = &HFF80FF
+
+If tnaform.cbox1.Value = "" Then tnaform.cbox1.BackColor = &HFFFFFF
+If tnaform.cbox2.Value = "" Then tnaform.cbox2.BackColor = &HFFFFFF
+If tnaform.cbox3.Value = "" Then tnaform.cbox3.BackColor = &HFFFFFF
+If tnaform.cbox4.Value = "" Then tnaform.cbox4.BackColor = &HFFFFFF
+If tnaform.cbox5.Value = "" Then tnaform.cbox5.BackColor = &HFFFFFF
+If tnaform.cbox6.Value = "" Then tnaform.cbox6.BackColor = &HFFFFFF
+If tnaform.cbox7.Value = "" Then tnaform.cbox7.BackColor = &HFFFFFF
+If tnaform.cbox8.Value = "" Then tnaform.cbox8.BackColor = &HFFFFFF
+If tnaform.cbox9.Value = "" Then tnaform.cbox9.BackColor = &HFFFFFF
+If tnaform.lbox1.Value = "" Then tnaform.lbox1.BackColor = &HFFFFFF
+If tnaform.lbox2.Value = "" Then tnaform.lbox2.BackColor = &HFFFFFF
+If tnaform.lbox3.Value = "" Then tnaform.lbox3.BackColor = &HFFFFFF
+If tnaform.obox1.Value = "" Then tnaform.obox1.BackColor = &HFFFFFF
+End Sub
+
+Private Sub SpinButton1_SpinUp()
+Dim a As Integer
+
+a = ActiveCell.Row
+a = a - 1
+Cells(a, 12).Select
+tnaform.fnamebox.Value = Cells(a, 2).Value
+tnaform.snamebox.Value = Cells(a, 3).Value
+tnaform.cbox1.Value = Cells(a, 4).Value
+    If Cells(a, 4).Interior.ColorIndex = 3 Then tnaform.cbox1.BackColor = &HFF&
+    If Cells(a, 4).Interior.ColorIndex = 6 Then tnaform.cbox1.BackColor = &HFFFF&
+    If Cells(a, 4).Interior.ColorIndex = 4 Then tnaform.cbox1.BackColor = &H80FF80
+    If Cells(a, 4).Interior.ColorIndex = 38 Then tnaform.cbox1.BackColor = &HFF80FF
+tnaform.cbox2.Value = Cells(a, 5).Value
+    If Cells(a, 5).Interior.ColorIndex = 3 Then tnaform.cbox2.BackColor = &HFF&
+    If Cells(a, 5).Interior.ColorIndex = 6 Then tnaform.cbox2.BackColor = &HFFFF&
+    If Cells(a, 5).Interior.ColorIndex = 4 Then tnaform.cbox2.BackColor = &H80FF80
+    If Cells(a, 5).Interior.ColorIndex = 38 Then tnaform.cbox2.BackColor = &HFF80FF
+tnaform.cbox3.Value = Cells(a, 6).Value
+    If Cells(a, 6).Interior.ColorIndex = 3 Then tnaform.cbox3.BackColor = &HFF&
+    If Cells(a, 6).Interior.ColorIndex = 6 Then tnaform.cbox3.BackColor = &HFFFF&
+    If Cells(a, 6).Interior.ColorIndex = 4 Then tnaform.cbox3.BackColor = &H80FF80
+    If Cells(a, 6).Interior.ColorIndex = 38 Then tnaform.cbox3.BackColor = &HFF80FF
+tnaform.cbox4.Value = Cells(a, 7).Value
+    If Cells(a, 7).Interior.ColorIndex = 3 Then tnaform.cbox4.BackColor = &HFF&
+    If Cells(a, 7).Interior.ColorIndex = 6 Then tnaform.cbox4.BackColor = &HFFFF&
+    If Cells(a, 7).Interior.ColorIndex = 4 Then tnaform.cbox4.BackColor = &H80FF80
+    If Cells(a, 7).Interior.ColorIndex = 38 Then tnaform.cbox4.BackColor = &HFF80FF
+tnaform.cbox5.Value = Cells(a, 8).Value
+    If Cells(a, 8).Interior.ColorIndex = 3 Then tnaform.cbox5.BackColor = &HFF&
+    If Cells(a, 8).Interior.ColorIndex = 6 Then tnaform.cbox5.BackColor = &HFFFF&
+    If Cells(a, 8).Interior.ColorIndex = 4 Then tnaform.cbox5.BackColor = &H80FF80
+    If Cells(a, 8).Interior.ColorIndex = 38 Then tnaform.cbox5.BackColor = &HFF80FF
+tnaform.cbox6.Value = Cells(a, 9).Value
+    If Cells(a, 9).Interior.ColorIndex = 3 Then tnaform.cbox6.BackColor = &HFF&
+    If Cells(a, 9).Interior.ColorIndex = 6 Then tnaform.cbox6.BackColor = &HFFFF&
+    If Cells(a, 9).Interior.ColorIndex = 4 Then tnaform.cbox6.BackColor = &H80FF80
+    If Cells(a, 9).Interior.ColorIndex = 38 Then tnaform.cbox6.BackColor = &HFF80FF
+tnaform.cbox7.Value = Cells(a, 10).Value
+    If Cells(a, 10).Interior.ColorIndex = 3 Then tnaform.cbox7.BackColor = &HFF&
+    If Cells(a, 10).Interior.ColorIndex = 6 Then tnaform.cbox7.BackColor = &HFFFF&
+    If Cells(a, 10).Interior.ColorIndex = 4 Then tnaform.cbox7.BackColor = &H80FF80
+    If Cells(a, 10).Interior.ColorIndex = 38 Then tnaform.cbox7.BackColor = &HFF80FF
+tnaform.cbox8.Value = Cells(a, 11).Value
+    If Cells(a, 11).Interior.ColorIndex = 3 Then tnaform.cbox8.BackColor = &HFF&
+    If Cells(a, 11).Interior.ColorIndex = 6 Then tnaform.cbox8.BackColor = &HFFFF&
+    If Cells(a, 11).Interior.ColorIndex = 4 Then tnaform.cbox8.BackColor = &H80FF80
+    If Cells(a, 11).Interior.ColorIndex = 38 Then tnaform.cbox8.BackColor = &HFF80FF
+tnaform.cbox9.Value = Cells(a, 12).Value
+    If Cells(a, 12).Interior.ColorIndex = 3 Then tnaform.cbox9.BackColor = &HFF&
+    If Cells(a, 12).Interior.ColorIndex = 6 Then tnaform.cbox9.BackColor = &HFFFF&
+    If Cells(a, 12).Interior.ColorIndex = 4 Then tnaform.cbox9.BackColor = &H80FF80
+    If Cells(a, 12).Interior.ColorIndex = 38 Then tnaform.cbox9.BackColor = &HFF80FF
+tnaform.lbox1.Value = Cells(a, 13).Value
+    If Cells(a, 13).Interior.ColorIndex = 3 Then tnaform.lbox1.BackColor = &HFF&
+    If Cells(a, 13).Interior.ColorIndex = 6 Then tnaform.lbox1.BackColor = &HFFFF&
+    If Cells(a, 13).Interior.ColorIndex = 4 Then tnaform.lbox1.BackColor = &H80FF80
+    If Cells(a, 13).Interior.ColorIndex = 38 Then tnaform.lbox1.BackColor = &HFF80FF
+tnaform.lbox2.Value = Cells(a, 14).Value
+    If Cells(a, 14).Interior.ColorIndex = 3 Then tnaform.lbox2.BackColor = &HFF&
+    If Cells(a, 14).Interior.ColorIndex = 6 Then tnaform.lbox2.BackColor = &HFFFF&
+    If Cells(a, 14).Interior.ColorIndex = 4 Then tnaform.lbox2.BackColor = &H80FF80
+    If Cells(a, 14).Interior.ColorIndex = 38 Then tnaform.lbox2.BackColor = &HFF80FF
+tnaform.lbox3.Value = Cells(a, 15).Value
+    If Cells(a, 15).Interior.ColorIndex = 3 Then tnaform.lbox3.BackColor = &HFF&
+    If Cells(a, 15).Interior.ColorIndex = 6 Then tnaform.lbox3.BackColor = &HFFFF&
+    If Cells(a, 15).Interior.ColorIndex = 4 Then tnaform.lbox3.BackColor = &H80FF80
+    If Cells(a, 15).Interior.ColorIndex = 38 Then tnaform.lbox3.BackColor = &HFF80FF
+tnaform.obox1.Value = Cells(a, 16).Value
+    If Cells(a, 16).Interior.ColorIndex = 3 Then tnaform.obox1.BackColor = &HFF&
+    If Cells(a, 16).Interior.ColorIndex = 6 Then tnaform.obox1.BackColor = &HFFFF&
+    If Cells(a, 16).Interior.ColorIndex = 4 Then tnaform.obox1.BackColor = &H80FF80
+    If Cells(a, 16).Interior.ColorIndex = 38 Then tnaform.obox1.BackColor = &HFF80FF
+    
+If tnaform.cbox1.Value = "" Then tnaform.cbox1.BackColor = &HFFFFFF
+If tnaform.cbox2.Value = "" Then tnaform.cbox2.BackColor = &HFFFFFF
+If tnaform.cbox3.Value = "" Then tnaform.cbox3.BackColor = &HFFFFFF
+If tnaform.cbox4.Value = "" Then tnaform.cbox4.BackColor = &HFFFFFF
+If tnaform.cbox5.Value = "" Then tnaform.cbox5.BackColor = &HFFFFFF
+If tnaform.cbox6.Value = "" Then tnaform.cbox6.BackColor = &HFFFFFF
+If tnaform.cbox7.Value = "" Then tnaform.cbox7.BackColor = &HFFFFFF
+If tnaform.cbox8.Value = "" Then tnaform.cbox8.BackColor = &HFFFFFF
+If tnaform.cbox9.Value = "" Then tnaform.cbox9.BackColor = &HFFFFFF
+If tnaform.lbox1.Value = "" Then tnaform.lbox1.BackColor = &HFFFFFF
+If tnaform.lbox2.Value = "" Then tnaform.lbox2.BackColor = &HFFFFFF
+If tnaform.lbox3.Value = "" Then tnaform.lbox3.BackColor = &HFFFFFF
+If tnaform.obox1.Value = "" Then tnaform.obox1.BackColor = &HFFFFFF
+End Sub
+
+-----------------------------------------------------------------------------------------------------------------
+
+'module1
+Sub nonentry()
+Dim a As Integer, b As Integer
+
+Application.ScreenUpdating = False
+
+For a = 2 To 700
+If Cells(a, 1).Interior.ColorIndex = xlNone Then b = b + 1
+Next a
+
+Application.ScreenUpdating = True
+
+MsgBox b, vbOKOnly, "No. Outstanding"
+
+End Sub
+
+Sub missentry()
+Dim a As Integer, b As Integer, c As Integer, d As Variant
+
+Application.ScreenUpdating = False
+c = 2
+
+For a = 2 To 700
+
+If Sheet1.Cells(a, 1).Interior.ColorIndex = xlNone Then
+    d = Sheet1.Cells(a, 1).Value
+    Sheet5.Cells(c, 1).Value = d
+    Sheet5.Cells(c, 2).Value = Sheet1.Cells(a, 2).Value
+    Sheet5.Cells(c, 3).Value = Sheet1.Cells(a, 3).Value
+    c = c + 1
+End If
+
+Next a
+
+End Sub
+
+-----------------------------------------------------------------------------------------------------
+
+'module2
+
+Sub formload()
+Dim a As Integer
+
+On Error Resume Next
+
+ActiveSheet.Cells.Find(what:=tnaform.fbox.Value, after:=ActiveCell, LookIn:=xlValues, lookat:=xlPart, _
+searchorder:=xlByRows, searchdirection:=xlNext, MatchCase:=False, searchformat:=False).Activate
+
+a = ActiveCell.Row
+
+tnaform.fnamebox.Value = Cells(a, 2).Value
+tnaform.snamebox.Value = Cells(a, 3).Value
+tnaform.cbox1.Value = Cells(a, 4).Value
+    If Cells(a, 4).Interior.ColorIndex = 3 Then tnaform.cbox1.BackColor = &HFF&
+    If Cells(a, 4).Interior.ColorIndex = 6 Then tnaform.cbox1.BackColor = &HFFFF&
+    If Cells(a, 4).Interior.ColorIndex = 4 Then tnaform.cbox1.BackColor = &H80FF80
+    If Cells(a, 4).Interior.ColorIndex = 38 Then tnaform.cbox1.BackColor = &HFF80FF
+tnaform.cbox2.Value = Cells(a, 5).Value
+    If Cells(a, 5).Interior.ColorIndex = 3 Then tnaform.cbox2.BackColor = &HFF&
+    If Cells(a, 5).Interior.ColorIndex = 6 Then tnaform.cbox2.BackColor = &HFFFF&
+    If Cells(a, 5).Interior.ColorIndex = 4 Then tnaform.cbox2.BackColor = &H80FF80
+    If Cells(a, 5).Interior.ColorIndex = 38 Then tnaform.cbox2.BackColor = &HFF80FF
+tnaform.cbox3.Value = Cells(a, 6).Value
+    If Cells(a, 6).Interior.ColorIndex = 3 Then tnaform.cbox3.BackColor = &HFF&
+    If Cells(a, 6).Interior.ColorIndex = 6 Then tnaform.cbox3.BackColor = &HFFFF&
+    If Cells(a, 6).Interior.ColorIndex = 4 Then tnaform.cbox3.BackColor = &H80FF80
+    If Cells(a, 6).Interior.ColorIndex = 38 Then tnaform.cbox3.BackColor = &HFF80FF
+tnaform.cbox4.Value = Cells(a, 7).Value
+    If Cells(a, 7).Interior.ColorIndex = 3 Then tnaform.cbox4.BackColor = &HFF&
+    If Cells(a, 7).Interior.ColorIndex = 6 Then tnaform.cbox4.BackColor = &HFFFF&
+    If Cells(a, 7).Interior.ColorIndex = 4 Then tnaform.cbox4.BackColor = &H80FF80
+    If Cells(a, 7).Interior.ColorIndex = 38 Then tnaform.cbox4.BackColor = &HFF80FF
+tnaform.cbox5.Value = Cells(a, 8).Value
+    If Cells(a, 8).Interior.ColorIndex = 3 Then tnaform.cbox5.BackColor = &HFF&
+    If Cells(a, 8).Interior.ColorIndex = 6 Then tnaform.cbox5.BackColor = &HFFFF&
+    If Cells(a, 8).Interior.ColorIndex = 4 Then tnaform.cbox5.BackColor = &H80FF80
+    If Cells(a, 8).Interior.ColorIndex = 38 Then tnaform.cbox5.BackColor = &HFF80FF
+tnaform.cbox6.Value = Cells(a, 9).Value
+    If Cells(a, 9).Interior.ColorIndex = 3 Then tnaform.cbox6.BackColor = &HFF&
+    If Cells(a, 9).Interior.ColorIndex = 6 Then tnaform.cbox6.BackColor = &HFFFF&
+    If Cells(a, 9).Interior.ColorIndex = 4 Then tnaform.cbox6.BackColor = &H80FF80
+    If Cells(a, 9).Interior.ColorIndex = 38 Then tnaform.cbox6.BackColor = &HFF80FF
+tnaform.cbox7.Value = Cells(a, 10).Value
+    If Cells(a, 10).Interior.ColorIndex = 3 Then tnaform.cbox7.BackColor = &HFF&
+    If Cells(a, 10).Interior.ColorIndex = 6 Then tnaform.cbox7.BackColor = &HFFFF&
+    If Cells(a, 10).Interior.ColorIndex = 4 Then tnaform.cbox7.BackColor = &H80FF80
+    If Cells(a, 10).Interior.ColorIndex = 38 Then tnaform.cbox7.BackColor = &HFF80FF
+tnaform.cbox8.Value = Cells(a, 11).Value
+    If Cells(a, 11).Interior.ColorIndex = 3 Then tnaform.cbox8.BackColor = &HFF&
+    If Cells(a, 11).Interior.ColorIndex = 6 Then tnaform.cbox8.BackColor = &HFFFF&
+    If Cells(a, 11).Interior.ColorIndex = 4 Then tnaform.cbox8.BackColor = &H80FF80
+    If Cells(a, 11).Interior.ColorIndex = 38 Then tnaform.cbox8.BackColor = &HFF80FF
+tnaform.cbox9.Value = Cells(a, 12).Value
+    If Cells(a, 12).Interior.ColorIndex = 3 Then tnaform.cbox9.BackColor = &HFF&
+    If Cells(a, 12).Interior.ColorIndex = 6 Then tnaform.cbox9.BackColor = &HFFFF&
+    If Cells(a, 12).Interior.ColorIndex = 4 Then tnaform.cbox9.BackColor = &H80FF80
+    If Cells(a, 12).Interior.ColorIndex = 38 Then tnaform.cbox9.BackColor = &HFF80FF
+tnaform.lbox1.Value = Cells(a, 13).Value
+    If Cells(a, 13).Interior.ColorIndex = 3 Then tnaform.lbox1.BackColor = &HFF&
+    If Cells(a, 13).Interior.ColorIndex = 6 Then tnaform.lbox1.BackColor = &HFFFF&
+    If Cells(a, 13).Interior.ColorIndex = 4 Then tnaform.lbox1.BackColor = &H80FF80
+    If Cells(a, 13).Interior.ColorIndex = 38 Then tnaform.lbox1.BackColor = &HFF80FF
+tnaform.lbox2.Value = Cells(a, 14).Value
+    If Cells(a, 14).Interior.ColorIndex = 3 Then tnaform.lbox2.BackColor = &HFF&
+    If Cells(a, 14).Interior.ColorIndex = 6 Then tnaform.lbox2.BackColor = &HFFFF&
+    If Cells(a, 14).Interior.ColorIndex = 4 Then tnaform.lbox2.BackColor = &H80FF80
+    If Cells(a, 14).Interior.ColorIndex = 38 Then tnaform.lbox2.BackColor = &HFF80FF
+tnaform.lbox3.Value = Cells(a, 15).Value
+    If Cells(a, 23).Interior.ColorIndex = 3 Then tnaform.lbox3.BackColor = &HFF&
+    If Cells(a, 23).Interior.ColorIndex = 6 Then tnaform.lbox3.BackColor = &HFFFF&
+    If Cells(a, 23).Interior.ColorIndex = 4 Then tnaform.lbox3.BackColor = &H80FF80
+    If Cells(a, 23).Interior.ColorIndex = 38 Then tnaform.lbox3.BackColor = &HFF80FF
+tnaform.obox1.Value = Cells(a, 16).Value
+    If Cells(a, 16).Interior.ColorIndex = 3 Then tnaform.obox1.BackColor = &HFF&
+    If Cells(a, 16).Interior.ColorIndex = 6 Then tnaform.obox1.BackColor = &HFFFF&
+    If Cells(a, 16).Interior.ColorIndex = 4 Then tnaform.obox1.BackColor = &H80FF80
+    If Cells(a, 16).Interior.ColorIndex = 38 Then tnaform.obox1.BackColor = &HFF80FF
+    
+If tnaform.cbox1.Value = "" Then tnaform.cbox1.BackColor = &HFFFFFF
+If tnaform.cbox2.Value = "" Then tnaform.cbox2.BackColor = &HFFFFFF
+If tnaform.cbox3.Value = "" Then tnaform.cbox3.BackColor = &HFFFFFF
+If tnaform.cbox4.Value = "" Then tnaform.cbox4.BackColor = &HFFFFFF
+If tnaform.cbox5.Value = "" Then tnaform.cbox5.BackColor = &HFFFFFF
+If tnaform.cbox6.Value = "" Then tnaform.cbox6.BackColor = &HFFFFFF
+If tnaform.cbox7.Value = "" Then tnaform.cbox7.BackColor = &HFFFFFF
+If tnaform.cbox8.Value = "" Then tnaform.cbox8.BackColor = &HFFFFFF
+If tnaform.cbox9.Value = "" Then tnaform.cbox9.BackColor = &HFFFFFF
+If tnaform.lbox1.Value = "" Then tnaform.lbox1.BackColor = &HFFFFFF
+If tnaform.lbox2.Value = "" Then tnaform.lbox2.BackColor = &HFFFFFF
+If tnaform.lbox3.Value = "" Then tnaform.lbox3.BackColor = &HFFFFFF
+If tnaform.obox1.Value = "" Then tnaform.obox1.BackColor = &HFFFFFF
+
+End Sub
+
+----------------------------------------------------------------------------------------------------------------
+
+'module3
+
+Sub formrun()
+progressform.Show
+End Sub
+
+Sub qform()
+queryform.Show False
+End Sub
+
+Sub tform()
+tnaform.Show False
+End Sub
+
+

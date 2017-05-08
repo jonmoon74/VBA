@@ -1,0 +1,50 @@
+'121 template
+
+'module1
+
+Sub new121format()
+'
+' new121format Macro
+' Macro recorded 01/08/2011 by Jon Moon
+'
+' Keyboard Shortcut: Ctrl+Shift+N
+'
+    
+    Sheet2.Cells(2, 6).Value = DateValue(Now)
+    Sheet2.Cells(2, 6) = Format(Sheet2.Cells(2, 6), "dd/mmm/yy")
+    
+    Sheet2.Visible = xlSheetVisible
+    
+    Sheets("Sheet2").Select
+    Range("A2:F50").Select
+    Selection.Copy
+    Sheets("Sheet1").Select
+    Rows("3:3").Select
+    Selection.Insert Shift:=xlDown
+    Range("A6:C6").Select
+    
+    Sheet1.Cells(2, 6).Value = DateValue(Now)
+    Sheet1.Cells(2, 6) = Format(Sheet1.Cells(2, 6), "dd/mmm/yy")
+    
+    Sheet1.Cells(6, 1).Select
+    Sheet1.Cells(6, 1).Activate
+    
+    Sheet2.Visible = xlSheetHidden
+    
+End Sub
+
+Sub hider()
+Sheet2.Visible = xlSheetHidden
+End Sub
+
+Sub shower()
+Sheet2.Visible = xlSheetVisible
+End Sub
+
+-----------------------------------------------------------------------------------------
+
+'sheet1
+
+Private Sub newbutton_Click()
+Application.Run "new121format"
+End Sub

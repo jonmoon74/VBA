@@ -1,0 +1,88 @@
+Calling from one sub to another:
+
+Stackoverflow:
+
+	Private Sub MainMacro()
+    Dim lReturn As Long
+
+    'Get the return from the CommentSub
+    lReturn = CommentSub
+
+    'Pass that to the nextsub
+    NumberOfRowsToCopy (lReturn)
+End Sub
+
+Function CommentSub() As Long 'Declare the return type after the function
+  Dim NewOrderLineCounter As Long
+  Dim Counter As Integer
+  For Counter = 1 To 500
+    If Cells(Counter, "S") = "New" Then
+      NewOrderLineCounter = NewOrderLineCounter + 1
+      Cells(Counter, "V").Select
+      ActiveCell.FormulaR1C1 = "New Line"
+    End If
+  Next Counter
+
+  'Here you set the return value of the funtion
+  CommentSub = NewOrderLineCounter
+End Function
+
+Sub NumberOfRowsToCopy(lCount As Long) 'Declare the variable being passed to the sub.
+Dim NewOrderLineCounter As Long
+NewOrderLineCounter = lCount
+  ActiveSheet.Range("$A$12:$T$1001").AutoFilter Field:=16, Criteria1:= _
+    "New"
+  ActiveSheet.Range("B15:N" & NewOrderLineCounter).SpecialCells(xlCellTypeVisible).Select
+End Sub
+Or if you want to go with the public variable route, declare them at the top of the form or module code. Above all functions and subs.
+
+'Declared like this it can be accessed by any sub or function in this module or form.
+Private NewOrderLineCounter as Long
+
+'Declared like this it can be accessed by any sub or function in this module or form and from others. Although I think if it is in a form it will not be accessible from modules.  For that you can create a module called globals and declare it there as public.
+Public NewOrderLineCounter as Long
+
+Sub MainMacro ()
+  Call CommentSub
+  Call NumberOfRowsToCopy
+End sub
+
+Sub CommentSub
+  Dim Counter As Integer
+  For Counter = 1 to 500
+    If Cells(Counter, "S") = "New" Then
+      NewOrderLineCounter = NewOrderLineCounter + 1
+      Cells(Counter, "V").Select
+      ActiveCell.FormulaR1C1 = "New Line"
+    End If
+  Next Counter
+End sub
+
+Sub NumberOfRowsToCopy
+  ActiveSheet.Range("$A$12:$T$1001").AutoFilter Field:=16, Criteria1:= _
+    "New"
+  ActiveSheet.Range("B15:N" & NewOrderLineCounter).SpecialCells(xlCellTypeVisible).Select
+End sub
+
+
+
+
+
+
+Another option is to pass the variable to the second code:
+
+Sub FirstCode()
+
+lstRow = Range("A65536").End(xlUp).Row
+
+SecondCode(lstRow)
+
+End Sub
+
+==========================================
+
+Sub SecondCode(ByVal RowCnt as Double)
+
+MsgBox RowCnt
+
+End Sub

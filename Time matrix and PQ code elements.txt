@@ -1,0 +1,457 @@
+Excel VBA code elements for PQ Time matrix
+
+This Workbook:
+
+Private Sub Workbook_Open()
+Application.Run "SheetStartUp"
+Application.Run "Radio_Button_Clear"
+End Sub
+
+Begin Button (Instructions sheet):
+
+Private Sub BeginButton_Click()
+Application.Run "BeginAssessment"
+End Sub
+
+
+Submit Button:
+
+Private Sub SubmitButton_Click()
+Application.Run "PQ_creation"
+End Sub
+
+Main code block:
+
+
+Option Explicit
+'Controls
+'BeginButton click to show quest - with check that NameBox is not empty and hide instructions
+'SheetStartUp hides all bar instructions for workbook open function
+'a submit button for quest that activates results and hides quest
+'investigate possibility of save control to deep hide instructions and quest
+'BeginButton
+'SubmitButton
+
+Sub PQ_creation()
+
+'Declarations
+Dim Q1M As Single, Q2M As Single, Q3M As Single, Q4M As Single, TimeAvailable As Integer
+Dim Q1Score As Integer, Q2Score As Integer, Q3Score As Integer, Q4Score As Integer, QTotal As Integer
+Dim Q1Perc As Single, Q2Perc As Single, Q3Perc As Single, Q4Perc As Single
+Dim P1Score As Single, P2Score As Single, P3Score As Single, P4Score As Single, PTotal As Single
+Dim Time1Score As Single, Time2Score As Single, Time3Score As Single, Time4Score As Single, QTimeTotal As Single
+Dim PQ As Integer, NameOfUser As String
+
+'set standard variables for quadrant RoI multipliers and standard time as 420
+Q1M = 1
+Q2M = 5
+Q3M = 0.3
+Q4M = 0
+TimeAvailable = 420
+NameOfUser = instructions.NameBox.Value
+
+'Return scores by quadrant and set to variables
+Call ScoreCounter1
+Call ScoreCounter2
+Call ScoreCounter3
+Call ScoreCounter4
+
+Q1Score = ScoreCounter1
+Q2Score = ScoreCounter2
+Q3Score = ScoreCounter3
+Q4Score = ScoreCounter4
+QTotal = Q1Score + Q2Score + Q3Score + Q4Score
+
+'produce data table by quadrant
+Q1Perc = Q1Score / QTotal
+Q2Perc = Q2Score / QTotal
+Q3Perc = Q3Score / QTotal
+Q4Perc = Q4Score / QTotal
+
+data_control.Cells(11, 4) = Q1Perc
+data_control.Cells(11, 5) = Q2Perc
+data_control.Cells(11, 6) = Q3Perc
+data_control.Cells(11, 7) = Q4Perc
+
+'calculate the productivity quotient(PQ)
+''first count percentage of timeavailable per quadrant and total
+Time1Score = TimeAvailable * Q1Perc
+Time2Score = TimeAvailable * Q2Perc
+Time3Score = TimeAvailable * Q3Perc
+Time4Score = TimeAvailable * Q4Perc
+QTimeTotal = Time1Score + Time2Score + Time3Score + Time4Score
+
+'' then multiply these results by multipliers to get P?Scores
+P1Score = Time1Score * Q1M
+P2Score = Time2Score * Q2M
+P3Score = Time3Score * Q3M
+P4Score = Time4Score * Q4M
+PTotal = P1Score + P2Score + P3Score + P4Score
+
+''finally calculate productivity difference as percentage (note max is 80% so extra 0.8 multipler added to bring up to 100)
+PQ = (((PTotal - QTimeTotal) / PTotal) / 0.8) * 100
+
+'Send PQ to results sheet
+results.UserName = NameOfUser
+results.PQLabel = PQ
+
+'draw time matrix chart
+
+'''''Call ChartMaker - not currently used but chart draws from veryhidden sheet (data_control)
+
+'Change user sheet view
+results.Visible = xlSheetVisible
+results.Activate
+instructions.Visible = xlSheetVeryHidden
+quest.Visible = xlSheetVeryHidden
+quest1.Visible = xlSheetVeryHidden
+data_control.Visible = xlSheetVeryHidden
+End Sub
+
+Sub BeginAssessment()
+If instructions.NameBox.Value = "" Then
+    MsgBox "Please enter your name to begin", vbOKOnly, "Error"
+    Exit Sub
+Else
+    quest.Visible = xlSheetVisible
+    quest.Activate
+    quest.Cells(6, 3).Select
+    instructions.Visible = xlSheetHidden
+End If
+End Sub
+
+Sub SheetStartUp()
+instructions.Visible = xlSheetVisible
+quest.Visible = xlSheetHidden
+quest1.Visible = xlSheetVeryHidden
+results.Visible = xlSheetHidden
+
+data_control.Visible = xlSheetVeryHidden
+End Sub
+
+Sub SheetSaveHider()
+data_control.Visible = xlSheetVeryHidden
+quest.Visible = xlSheetVeryHidden
+quest1.Visible = xlSheetVeryHidden
+instructions.Visible = xlSheetVeryHidden
+results.Visible = xlSheetVisible
+End Sub
+Function ScoreCounter1() As Integer
+
+Dim A5 As Integer, A6 As Integer, A7 As Integer
+Dim A12 As Integer, A16 As Integer, A17 As Integer, A18 As Integer, A19 As Integer
+Dim A23 As Integer, A25 As Integer
+Dim A36 As Integer, A38 As Integer, A39 As Integer
+Dim A41 As Integer, A42 As Integer, A47 As Integer
+Dim Q1ScoreC As Integer
+
+'assign variable to each cell reference and pull through the cell values
+A5 = quest1.Cells(10, 3).Value
+A6 = quest1.Cells(11, 3).Value
+A7 = quest1.Cells(12, 3).Value
+A12 = quest1.Cells(17, 3).Value
+A16 = quest1.Cells(21, 3).Value
+A17 = quest1.Cells(22, 3).Value
+A18 = quest1.Cells(23, 3).Value
+A19 = quest1.Cells(24, 3).Value
+A23 = quest1.Cells(28, 3).Value
+A25 = quest1.Cells(30, 3).Value
+A36 = quest1.Cells(41, 3).Value
+A38 = quest1.Cells(43, 3).Value
+A39 = quest1.Cells(44, 3).Value
+A41 = quest1.Cells(46, 3).Value
+A42 = quest1.Cells(47, 3).Value
+A47 = quest1.Cells(52, 3).Value
+
+'then total variables by quadrant to create the Q?Score values
+Q1ScoreC = A5 + A6 + A7 + A12 + A16 + A17 + A18 + A19 + A23 + A25 + A36 + A38 + A39 + A41 + A42 + A47
+ScoreCounter1 = Q1ScoreC
+
+End Function
+
+Function ScoreCounter2() As Integer
+
+Dim A1 As Integer, A2 As Integer, A3 As Integer, A4 As Integer
+Dim A26 As Integer, A27 As Integer, A28 As Integer
+Dim A32 As Integer, A35 As Integer, A37 As Integer, A40 As Integer
+Dim A43 As Integer, A46 As Integer, A49 As Integer, A50 As Integer
+Dim Q2ScoreC As Integer
+
+'assign variable to each cell reference and pull through the cell values
+A1 = quest1.Cells(6, 3).Value
+A2 = quest1.Cells(7, 3).Value
+A3 = quest1.Cells(8, 3).Value
+A4 = quest1.Cells(9, 3).Value
+A26 = quest1.Cells(31, 3).Value
+A27 = quest1.Cells(32, 3).Value
+A28 = quest1.Cells(33, 3).Value
+A32 = quest1.Cells(37, 3).Value
+A35 = quest1.Cells(40, 3).Value
+A37 = quest1.Cells(42, 3).Value
+A40 = quest1.Cells(45, 3).Value
+A43 = quest1.Cells(48, 3).Value
+A46 = quest1.Cells(51, 3).Value
+A49 = quest1.Cells(54, 3).Value
+A50 = quest1.Cells(55, 3).Value
+
+'then total variables by quadrant to create the Q?Score values
+Q2ScoreC = A1 + A2 + A3 + A4 + A26 + A27 + A28 + A32 + A35 + A37 + A40 + A43 + A46 + A49 + A50
+ScoreCounter2 = Q2ScoreC
+
+End Function
+Function ScoreCounter3() As Integer
+
+Dim A9 As Integer
+Dim A11 As Integer, A13 As Integer, A14 As Integer, A15 As Integer
+Dim A22 As Integer, A24 As Integer, A29 As Integer
+Dim A31 As Integer, A33 As Integer
+Dim A44 As Integer, A48 As Integer
+Dim Q3ScoreC As Integer
+
+'assign variable to each cell reference and pull through the cell values
+A9 = quest1.Cells(14, 3).Value
+A11 = quest1.Cells(16, 3).Value
+A13 = quest1.Cells(18, 3).Value
+A14 = quest1.Cells(19, 3).Value
+A15 = quest1.Cells(20, 3).Value
+A22 = quest1.Cells(27, 3).Value
+A24 = quest1.Cells(29, 3).Value
+A29 = quest1.Cells(34, 3).Value
+A31 = quest1.Cells(36, 3).Value
+A33 = quest1.Cells(38, 3).Value
+A44 = quest1.Cells(49, 3).Value
+A48 = quest1.Cells(53, 3).Value
+
+'then total variables by quadrant to create the Q?Score values
+Q3ScoreC = A9 + A11 + A13 + A14 + A15 + A22 + A24 + A29 + A31 + A33 + A44 + A48
+ScoreCounter3 = Q3ScoreC
+
+End Function
+Function ScoreCounter4() As Integer
+
+Dim A8 As Integer, A10 As Integer
+Dim A20 As Integer
+Dim A21 As Integer, A30 As Integer
+Dim A34 As Integer
+Dim A45 As Integer
+Dim Q4ScoreC As Integer
+
+'assign variable to each cell reference and pull through the cell values
+A8 = quest1.Cells(13, 3).Value
+A10 = quest1.Cells(15, 3).Value
+A20 = quest1.Cells(25, 3).Value
+A21 = quest1.Cells(26, 3).Value
+A30 = quest1.Cells(35, 3).Value
+A34 = quest1.Cells(39, 3).Value
+A45 = quest1.Cells(50, 3).Value
+
+'then total variables by quadrant to create the Q?Score values
+Q4ScoreC = A8 + A10 + A20 + A21 + A30 + A34 + A45
+ScoreCounter4 = Q4ScoreC
+
+
+Radio Button Clear:
+
+
+Sub Radio_Button_Clear()
+quest.N1.Value = False
+quest.S1.Value = False
+quest.O1.Value = False
+quest.A1.Value = False
+quest.n2.Value = False
+quest.s2.Value = False
+quest.OptionButton3.Value = False
+quest.OptionButton4.Value = False
+quest.OptionButton5.Value = False
+quest.OptionButton6.Value = False
+quest.OptionButton7.Value = False
+quest.OptionButton8.Value = False
+quest.OptionButton9.Value = False
+quest.OptionButton10.Value = False
+quest.OptionButton11.Value = False
+quest.OptionButton12.Value = False
+quest.OptionButton13.Value = False
+quest.OptionButton14.Value = False
+quest.OptionButton15.Value = False
+quest.OptionButton16.Value = False
+quest.OptionButton17.Value = False
+quest.OptionButton18.Value = False
+quest.OptionButton19.Value = False
+quest.OptionButton20.Value = False
+quest.OptionButton21.Value = False
+quest.OptionButton22.Value = False
+quest.OptionButton23.Value = False
+quest.OptionButton24.Value = False
+quest.OptionButton25.Value = False
+quest.OptionButton26.Value = False
+quest.OptionButton27.Value = False
+quest.OptionButton28.Value = False
+quest.OptionButton29.Value = False
+quest.OptionButton30.Value = False
+quest.OptionButton31.Value = False
+quest.OptionButton32.Value = False
+quest.OptionButton33.Value = False
+quest.OptionButton34.Value = False
+quest.OptionButton35.Value = False
+quest.OptionButton36.Value = False
+quest.OptionButton37.Value = False
+quest.OptionButton38.Value = False
+quest.OptionButton39.Value = False
+quest.OptionButton40.Value = False
+quest.OptionButton41.Value = False
+quest.OptionButton42.Value = False
+quest.OptionButton43.Value = False
+quest.OptionButton44.Value = False
+quest.OptionButton45.Value = False
+quest.OptionButton46.Value = False
+quest.OptionButton47.Value = False
+quest.OptionButton48.Value = False
+quest.OptionButton49.Value = False
+quest.OptionButton50.Value = False
+quest.OptionButton51.Value = False
+quest.OptionButton52.Value = False
+quest.OptionButton53.Value = False
+quest.OptionButton54.Value = False
+quest.OptionButton55.Value = False
+quest.OptionButton56.Value = False
+quest.OptionButton57.Value = False
+quest.OptionButton58.Value = False
+quest.OptionButton59.Value = False
+quest.OptionButton60.Value = False
+quest.OptionButton61.Value = False
+quest.OptionButton62.Value = False
+quest.OptionButton63.Value = False
+quest.OptionButton64.Value = False
+quest.OptionButton65.Value = False
+quest.OptionButton66.Value = False
+quest.OptionButton67.Value = False
+quest.OptionButton68.Value = False
+quest.OptionButton69.Value = False
+quest.OptionButton70.Value = False
+quest.OptionButton71.Value = False
+quest.OptionButton72.Value = False
+quest.OptionButton73.Value = False
+quest.OptionButton74.Value = False
+quest.OptionButton75.Value = False
+quest.OptionButton76.Value = False
+quest.OptionButton77.Value = False
+quest.OptionButton78.Value = False
+quest.OptionButton79.Value = False
+quest.OptionButton80.Value = False
+quest.OptionButton81.Value = False
+quest.OptionButton82.Value = False
+quest.OptionButton83.Value = False
+quest.OptionButton84.Value = False
+quest.OptionButton85.Value = False
+quest.OptionButton86.Value = False
+quest.OptionButton87.Value = False
+quest.OptionButton88.Value = False
+quest.OptionButton89.Value = False
+quest.OptionButton90.Value = False
+quest.OptionButton91.Value = False
+quest.OptionButton92.Value = False
+quest.OptionButton93.Value = False
+quest.OptionButton94.Value = False
+quest.OptionButton95.Value = False
+quest.OptionButton96.Value = False
+quest.OptionButton97.Value = False
+quest.OptionButton98.Value = False
+quest.OptionButton99.Value = False
+quest.OptionButton100.Value = False
+quest.OptionButton101.Value = False
+quest.OptionButton102.Value = False
+quest.OptionButton103.Value = False
+quest.OptionButton104.Value = False
+quest.OptionButton105.Value = False
+quest.OptionButton106.Value = False
+quest.OptionButton107.Value = False
+quest.OptionButton108.Value = False
+quest.OptionButton109.Value = False
+quest.OptionButton110.Value = False
+quest.OptionButton111.Value = False
+quest.OptionButton112.Value = False
+quest.OptionButton113.Value = False
+quest.OptionButton114.Value = False
+quest.OptionButton115.Value = False
+quest.OptionButton116.Value = False
+quest.OptionButton117.Value = False
+quest.OptionButton118.Value = False
+quest.OptionButton119.Value = False
+quest.OptionButton120.Value = False
+quest.OptionButton121.Value = False
+quest.OptionButton122.Value = False
+quest.OptionButton123.Value = False
+quest.OptionButton124.Value = False
+quest.OptionButton125.Value = False
+quest.OptionButton126.Value = False
+quest.OptionButton127.Value = False
+quest.OptionButton128.Value = False
+quest.OptionButton129.Value = False
+quest.OptionButton130.Value = False
+quest.OptionButton131.Value = False
+quest.OptionButton132.Value = False
+quest.OptionButton133.Value = False
+quest.OptionButton134.Value = False
+quest.OptionButton135.Value = False
+quest.OptionButton136.Value = False
+quest.OptionButton137.Value = False
+quest.OptionButton138.Value = False
+quest.OptionButton139.Value = False
+quest.OptionButton140.Value = False
+quest.OptionButton141.Value = False
+quest.OptionButton142.Value = False
+quest.OptionButton143.Value = False
+quest.OptionButton144.Value = False
+quest.OptionButton145.Value = False
+quest.OptionButton146.Value = False
+quest.OptionButton147.Value = False
+quest.OptionButton148.Value = False
+quest.OptionButton149.Value = False
+quest.OptionButton150.Value = False
+quest.OptionButton151.Value = False
+quest.OptionButton152.Value = False
+quest.OptionButton153.Value = False
+quest.OptionButton154.Value = False
+quest.OptionButton155.Value = False
+quest.OptionButton156.Value = False
+quest.OptionButton157.Value = False
+quest.OptionButton158.Value = False
+quest.OptionButton159.Value = False
+quest.OptionButton160.Value = False
+quest.OptionButton161.Value = False
+quest.OptionButton162.Value = False
+quest.OptionButton163.Value = False
+quest.OptionButton164.Value = False
+quest.OptionButton165.Value = False
+quest.OptionButton166.Value = False
+quest.OptionButton167.Value = False
+quest.OptionButton168.Value = False
+quest.OptionButton169.Value = False
+quest.OptionButton170.Value = False
+quest.OptionButton171.Value = False
+quest.OptionButton172.Value = False
+quest.OptionButton173.Value = False
+quest.OptionButton174.Value = False
+quest.OptionButton175.Value = False
+quest.OptionButton176.Value = False
+quest.OptionButton177.Value = False
+quest.OptionButton178.Value = False
+quest.OptionButton179.Value = False
+quest.OptionButton180.Value = False
+quest.OptionButton181.Value = False
+quest.OptionButton182.Value = False
+quest.OptionButton183.Value = False
+quest.OptionButton184.Value = False
+quest.OptionButton185.Value = False
+quest.OptionButton186.Value = False
+quest.OptionButton187.Value = False
+quest.OptionButton188.Value = False
+quest.OptionButton189.Value = False
+quest.OptionButton190.Value = False
+quest.OptionButton191.Value = False
+quest.OptionButton192.Value = False
+quest.OptionButton193.Value = False
+quest.OptionButton194.Value = False
+quest.OptionButton195.Value = False
+quest.OptionButton196.Value = False
+End Sub
